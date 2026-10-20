@@ -12,13 +12,14 @@ in [PREREGISTRATION.md](PREREGISTRATION.md).
 
 | Step | State |
 |---|---|
-| 0. Blind hand-rating set (200 CC12M pairs) | done (fingerprint in results/handrate_manifest.json) |
-| 1. Judge smoke test + throughput table | ready to run |
-| 2. Polaris judge calibration | ready to run |
-| 3. Pool: filter, embed, dedup, decontaminate | not started |
-| 4. Arms A-D | not started |
-| 5. LoRA training (arm 0 + 4 arms x 3 seeds) | not started |
-| 6. Karpathy-test eval | not started |
+| 0. Blind hand-rating set (200 CC12M pairs) | done (fingerprint in `results/handrate_manifest.json`) |
+| 1. Judge smoke test + throughput table | done |
+| 2. Polaris + hand-rated judge validation, gate | running |
+| 3. Pool: download, CLIP embed, agent rules (human-approved), filter, dedup, decontaminate | code ready |
+| 4. Arms A-D (25K each) | code ready |
+| 5. Arm E: synthetic captions, generator/critic loop | code ready |
+| 6. LoRA training (5 arms x 3 seeds) | code ready |
+| 7. Karpathy-test eval: CIDEr, CHAIR, cross-family judge | code ready |
 
 ## Layout
 
@@ -67,6 +68,9 @@ python scripts/pull_inputs.py                    # hand-rating set from S3, chec
 python scripts/smoke_test_judge.py --benchmark   # exit 1 => switch to fallback model in config
 python scripts/score_polaris.py                  # resumable; rerun after a restart
 python scripts/score_handrate.py                 # refuses to run without your ratings
+python scripts/build_pool.py && python scripts/fetch_coco.py && python scripts/embed_pool.py
+python scripts/agent_rules.py                    # proposals only; approve them into configs/filters.yaml
+bash scripts/run_rest.sh                         # filter -> judge pool -> arms -> arm E -> train -> eval
 ```
 
 Then pull `data/scores/` back (S3) and run `notebooks/01_polaris_calibration.ipynb` locally.

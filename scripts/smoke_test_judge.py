@@ -49,7 +49,7 @@ def main():
     token_ids = judge.digit_token_ids()
     single_tokens = all(len(ids) == 1 for ids in token_ids.values())
 
-    n = max(sc["n_rows"], sc["bench_rows"] if args.benchmark else 0)
+    n = sc["n_rows"] + (3 * sc["bench_rows"] if args.benchmark else 0)
     pairs = collapse_ratings(load_polaris("test", n_shards=1)).sample(n=n, random_state=cfg["seed"])
     images = [Image.open(io.BytesIO(b)) for b in pairs.img_bytes]
     caps = pairs.cand.tolist()
@@ -75,7 +75,7 @@ def main():
     }
 
     if args.benchmark:
-        report["throughput"] = benchmark(judge, images, caps, cfg["cost"]["usd_per_hour"])
+        report["throughput"] = benchmark(judge, images[k:], caps[k:], cfg["cost"]["usd_per_hour"])
 
     report["passed"] = single_tokens and fail_rate <= sc["max_parse_failure_rate"]
     RESULTS.mkdir(exist_ok=True)
@@ -88,25 +88,26 @@ def main():
 
 
 def benchmark(judge: VLMJudge, images, caps, usd_per_hour) -> list[dict]:
-    """Same rows through each variant; one warm-up call each so compile/cache effects don't skew it."""
+    """Each variant gets its own disjoint rows, so vLLM's prefix cache cannot carry
+    encoded images from one variant into the next and flatter it."""
+    third = len(images) // 3
+    parts = [(images[i * third : (i + 1) * third], caps[i * third : (i + 1) * third]) for i in range(3)]
 
-    def text_full():
-        outs = judge.generate_text(images, caps, max_side=None)
-        return [bool(re.search(r"[1-5]", o)) for o in outs]
+    def plain(im, cp):
+        return [bool(re.search(r"[1-5]", o)) for o in judge.generate_text(im, cp, max_side=None)]
 
-    variants = {
-        "plain decode, full-res": text_full,
-        "1-token logprobs, full-res": lambda: [s.parse_ok for s in judge.score(images, caps, max_side=None)],
-        f"1-token logprobs, {judge.max_image_side}px": lambda: [s.parse_ok for s in judge.score(images, caps)],
-    }
+    variants = [
+        ("plain decode, full-res", plain),
+        ("1-token logprobs, full-res", lambda im, cp: [s.parse_ok for s in judge.score(im, cp, max_side=None)]),
+        (f"1-token logprobs, {judge.max_image_side}px", lambda im, cp: [s.parse_ok for s in judge.score(im, cp)]),
+    ]
     rows = []
-    for name, fn in variants.items():
-        judge.score(images[:16], caps[:16])  # warm-up
+    for (name, fn), (im, cp) in zip(variants, parts):
         t0 = time.perf_counter()
-        ok = fn()
+        ok = fn(im, cp)
         dt = time.perf_counter() - t0
-        rows.append({"variant": name, "n": len(images), "seconds": dt, "parse_ok": float(np.mean(ok)),
-                     **throughput(len(images), dt, usd_per_hour)})
+        rows.append({"variant": name, "n": len(im), "seconds": dt, "parse_ok": float(np.mean(ok)),
+                     **throughput(len(im), dt, usd_per_hour)})
     return rows
 
 

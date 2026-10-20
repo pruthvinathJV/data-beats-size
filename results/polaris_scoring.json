@@ -1,0 +1,39 @@
+{
+  "judge_model": "Qwen/Qwen3-VL-8B-Instruct",
+  "rubric_sha": "377eb6f13f29675dffda7e600190d52d7f115dabfecb8abeb7c742c33418032a",
+  "gpu": "A100-80GB (RunPod Secure Cloud)",
+  "train": {
+    "rows": 10617,
+    "unique_images": 6997,
+    "parse_failure_rate": 0.0,
+    "n": 10617,
+    "judge_s": 239.51112834200467,
+    "clip_s": 38.04548431500734,
+    "parse_failures": 0,
+    "judge": {
+      "images_per_s": 44.327794175975356,
+      "usd_per_1k_images": 0.011342269272001623
+    },
+    "clip": {
+      "images_per_s": 279.060713542081,
+      "usd_per_1k_images": 0.0018016788224902225
+    }
+  },
+  "test": {
+    "rows": 8726,
+    "unique_images": 2738,
+    "parse_failure_rate": 0.0,
+    "n": 8726,
+    "judge_s": 150.99839774899738,
+    "clip_s": 30.90909417699004,
+    "parse_failures": 0,
+    "judge": {
+      "images_per_s": 57.78869266219045,
+      "usd_per_1k_images": 0.008700279494412778
+    },
+    "clip": {
+      "images_per_s": 282.31173485815003,
+      "usd_per_1k_images": 0.0017809312036936858
+    }
+  }
+}

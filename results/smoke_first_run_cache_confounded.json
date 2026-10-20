@@ -1,0 +1,61 @@
+{
+  "model": "Qwen/Qwen3-VL-8B-Instruct",
+  "rubric_sha": "377eb6f13f29675dffda7e600190d52d7f115dabfecb8abeb7c742c33418032a",
+  "digit_token_ids": {
+    "1": [
+      16
+    ],
+    "2": [
+      17
+    ],
+    "3": [
+      18
+    ],
+    "4": [
+      19
+    ],
+    "5": [
+      20
+    ]
+  },
+  "single_token_digits": true,
+  "n_rows": 50,
+  "parse_failure_rate": 0.0,
+  "mean_digit_mass": 1.0000000126579713,
+  "argmax_histogram": [
+    16,
+    6,
+    7,
+    6,
+    15
+  ],
+  "spearman_vs_human_sanity": 0.8085243526998789,
+  "batch_latency_s": 1.7659988230007002,
+  "throughput": [
+    {
+      "variant": "plain decode, full-res",
+      "n": 256,
+      "seconds": 9.742812256001343,
+      "parse_ok": 1.0,
+      "images_per_s": 26.275780880649734,
+      "usd_per_1k_images": 0.019134646466322083
+    },
+    {
+      "variant": "1-token logprobs, full-res",
+      "n": 256,
+      "seconds": 1.5442449860056513,
+      "parse_ok": 1.0,
+      "images_per_s": 165.77680505356236,
+      "usd_per_1k_images": 0.0030328596187828003
+    },
+    {
+      "variant": "1-token logprobs, 512px",
+      "n": 256,
+      "seconds": 4.589971807996335,
+      "parse_ok": 1.0,
+      "images_per_s": 55.773763044473235,
+      "usd_per_1k_images": 0.009014593069090025
+    }
+  ],
+  "passed": true
+}

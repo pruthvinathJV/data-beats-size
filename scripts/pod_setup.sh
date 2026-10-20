@@ -11,4 +11,5 @@ export PATH="$HOME/.local/bin:$PATH"
 uv venv --python 3.12
 uv pip install -e ".[gpu,dev]"
 nvidia-smi --query-gpu=name,memory.total --format=csv
+echo "Before running jobs: export OMP_NUM_THREADS=12 MKL_NUM_THREADS=12 (containers report host cores)"
 echo "Ready. Next: source .venv/bin/activate && python scripts/smoke_test_judge.py --benchmark"

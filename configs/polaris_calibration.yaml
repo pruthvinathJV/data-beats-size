@@ -25,7 +25,7 @@ polaris:
 
 cost:
   gpu: A100-80GB (RunPod Secure Cloud)
-  usd_per_hour: null         # fill in from the RunPod console to get $ per 1K images
+  usd_per_hour: 1.81         # RunPod Secure Cloud A100 SXM 80GB, incl. disks
 
 gate:                        # mirrors PREREGISTRATION.md; do not edit after scores exist
   min_spearman_gain: 0.05

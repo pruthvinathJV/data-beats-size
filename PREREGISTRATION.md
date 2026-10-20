@@ -77,3 +77,11 @@ Mean caption length per arm is reported for every arm, since synthetic captions 
 **Cut (named as limitations and future work):** diffusion fine-tuning, DPO, Airflow DAG, human pairwise preference study, LoRA vs QLoRA table, 2B confirmation run.
 
 **Budget guard.** Long-running GPU jobs stop the pod on completion.
+
+### A2 (2026-10-20, after the gate, before any arm is built or any model is trained)
+
+**Gate outcome (confirmatory, unchanged).** On Polaris test, judge Spearman 0.832 vs CLIPScore 0.819: gain +0.013 (paired 95% CI 0.010-0.015), below the pre-registered 0.05. On the hand-rated CC12M set the judge was at least tied (judge - CLIPScore +0.272, CI 0.135-0.414). Decision: **NO-GO**. Per the fallback, arm D = CLIPScore top-k with the judge as tiebreaker, which is the same data as arm C up to ties; arm D is therefore not trained separately, and arm C's results stand for it.
+
+**Exploratory arm D\* (new, labeled exploratory everywhere it is reported).** D\* = B pool, judge top 25K. Motivation: the in-domain hand-rated result (+0.27) suggests the judge's advantage over CLIPScore is much larger on noisy web captions than on Polaris; the confirmatory gate did not require testing that. D\* is trained and evaluated exactly like the other arms (3 seeds). Its contrasts (D\* - A, D\* - C, E - D\*) are reported as exploratory and never as the pre-registered H1/H2.
+
+**Unchanged:** all thresholds, arms A, B, C, E, the arm E critic (the selection judge, as in A1), metrics and statistics.

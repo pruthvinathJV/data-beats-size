@@ -1,0 +1,5 @@
+{
+  "n": 200,
+  "judge_model": "Qwen/Qwen3-VL-8B-Instruct",
+  "rubric_sha": "377eb6f13f29675dffda7e600190d52d7f115dabfecb8abeb7c742c33418032a"
+}

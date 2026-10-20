@@ -1,0 +1,17 @@
+# Pool filters. Heuristics are fixed up front; agent rules are added only after
+# the author approves them (see results/agent/decisions.json).
+
+heuristics:
+  near_blank: {field: gray_std, op: "<", value: 8.0}        # blank or single-color images
+  too_small: {field: min_side, op: "<", value: 128}          # original resolution
+  extreme_aspect: {field: aspect, op: ">", value: 3.0}       # banners, strips
+  too_short: {field: n_words, op: "<", value: 3}
+  too_long: {field: n_words, op: ">", value: 60}
+
+dedup:
+  image_cosine: 0.95          # CLIP image embeddings; later duplicate of an earlier image is dropped
+
+decontamination:
+  image_cosine: 0.90          # any pool image this close to a Karpathy test image is dropped
+
+agent_rules: []               # filled from approved proposals only

@@ -1,0 +1,40 @@
+{
+  "polaris_gain": 0.0126709554347062,
+  "polaris_ci_judge": [
+    0.8272991235115533,
+    0.8357041744817297
+  ],
+  "polaris_ci_clip": [
+    0.8145804668194205,
+    0.8231075645283092
+  ],
+  "polaris_paired_diff_ci": [
+    0.00995358923555327,
+    0.015394004625410863
+  ],
+  "polaris_pass": false,
+  "handrate_diff": 0.27170002745690885,
+  "handrate_diff_ci": [
+    0.13528380270351825,
+    0.41438516974082523
+  ],
+  "handrate_pass": true,
+  "decision": "NO-GO",
+  "judge_model": "Qwen/Qwen3-VL-8B-Instruct",
+  "rubric_sha": "377eb6f13f29675dffda7e600190d52d7f115dabfecb8abeb7c742c33418032a",
+  "human_ceiling_spearman": 0.25492918527884084,
+  "calibration": {
+    "judge raw": {
+      "MAE": 0.4681,
+      "ECE": 0.3938
+    },
+    "judge isotonic": {
+      "MAE": 0.2105,
+      "ECE": 0.0472
+    },
+    "clipscore isotonic": {
+      "MAE": 0.2707,
+      "ECE": 0.0774
+    }
+  }
+}

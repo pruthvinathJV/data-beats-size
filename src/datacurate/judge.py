@@ -98,6 +98,7 @@ class VLMJudge:
         gpu_memory_utilization: float = 0.90,
         top_logprobs: int = 20,
         seed: int = 0,
+        trust_remote_code: bool = False,
     ):
         from vllm import LLM, SamplingParams
 
@@ -111,6 +112,7 @@ class VLMJudge:
             limit_mm_per_prompt={"image": 1},
             enable_prefix_caching=True,
             seed=seed,
+            trust_remote_code=trust_remote_code,
         )
         self._score_params = SamplingParams(max_tokens=1, temperature=0.0, logprobs=top_logprobs)
         self._SamplingParams = SamplingParams

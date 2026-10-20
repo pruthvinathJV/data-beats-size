@@ -88,3 +88,37 @@ def test_collapse_and_rater_pairs():
     assert dog.human == 2.0 and dog.n_ratings == 2 and dog.n_words == 2
     rp = rater_pairs(pairs)
     assert len(rp) == 1 and {rp.r1.iloc[0], rp.r2.iloc[0]} == {1.0, 3.0}
+
+
+def test_rule_mask_regex_and_threshold():
+    from datacurate.filters import apply_rules, rule_mask
+
+    df = pd.DataFrame({"caption": ["stock photo of a cat", "a dog on grass", "Stock Illustration"],
+                       "n_words": [4, 4, 2]})
+    assert rule_mask(df, {"regex": r"stock (photo|illustration)"}).tolist() == [True, False, True]
+    assert rule_mask(df, {"regex": "stock", "field": "n_words", "op": ">", "value": 3}).tolist() == [True, False, False]
+    reasons = apply_rules(df, {"short": {"field": "n_words", "op": "<", "value": 3}, "stock": {"regex": "stock"}})
+    assert reasons.tolist() == ["stock", "", "short"]  # first matching rule wins
+
+
+def test_max_cosine_keeps_first_duplicate():
+    pytest.importorskip("torch")
+    from datacurate.filters import max_cosine
+
+    e = np.array([[1, 0], [1, 0], [0, 1]], dtype=np.float32)
+    assert max_cosine(e, e, exclude_earlier=True).tolist() == [-1.0, 1.0, 0.0]
+
+
+def test_chair_counts_unsupported_objects(tmp_path):
+    import json as _json
+
+    from datacurate.captioning import Chair
+
+    (tmp_path / "syn.txt").write_text("person, man, woman, people\ndog, puppy\nsurfboard, surf board\n")
+    (tmp_path / "inst.json").write_text(_json.dumps({
+        "categories": [{"id": 1, "name": "person"}, {"id": 18, "name": "dog"}],
+        "annotations": [{"image_id": 7, "category_id": 1}]}))
+    ch = Chair(tmp_path / "syn.txt", tmp_path / "inst.json")
+    assert ch.objects("Two men carry a surf board") == {"person", "surfboard"}
+    s = ch.score([7], ["A man walks two puppies"], [["a person walking"]])
+    assert s["CHAIRi"] == 0.5 and s["CHAIRs"] == 1.0  # dog is not in the image

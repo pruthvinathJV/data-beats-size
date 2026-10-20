@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Caption Rating __BATCH_LABEL__</title>
+<style>
+  :root {
+    --bg: #f7f7f5; --panel: #ffffff; --text: #1d1d1b; --muted: #6b6b66; --line: #e2e2dd;
+    --accent: #2f5bd3; --chosen: #2f5bd3; --chosen-text: #ffffff; --tag: #eef2fd;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #141413; --panel: #1f1f1d; --text: #ececea; --muted: #9a9a94; --line: #33332f;
+            --accent: #7a9cff; --chosen: #7a9cff; --chosen-text: #10131c; --tag: #252b3d; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 860px; margin: 0 auto; padding: 20px 16px 48px; }
+  header { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  h1 { font-size: 18px; margin: 0; }
+  .muted { color: var(--muted); }
+  .bar { height: 4px; background: var(--line); border-radius: 2px; margin: 12px 0 16px; overflow: hidden; }
+  .bar > div { height: 100%; background: var(--accent); width: 0; transition: width .15s; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px; }
+  .img { display: flex; justify-content: center; background: var(--bg); border-radius: 6px; min-height: 240px; }
+  .img img { max-width: 100%; max-height: 48vh; object-fit: contain; }
+  .caption { font-size: 17px; margin: 14px 2px 16px; overflow-wrap: anywhere; }
+  .label { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin: 14px 0 6px; }
+  .scores { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  button { font: inherit; color: var(--text); }
+  .scores button { font-size: 18px; padding: 10px 0; border-radius: 8px; cursor: pointer;
+                   border: 1px solid var(--line); background: var(--panel); }
+  .scores button.on, .tags button.on { background: var(--chosen); color: var(--chosen-text); border-color: var(--chosen); }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tags button { font-size: 13px; padding: 4px 10px; border-radius: 999px; cursor: pointer;
+                 border: 1px solid var(--line); background: var(--tag); }
+  .tags kbd { margin-right: 4px; }
+  textarea { width: 100%; min-height: 54px; resize: vertical; font: inherit; color: var(--text);
+             background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px; }
+  .nav { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; gap: 8px; flex-wrap: wrap; }
+  .nav button, .dl { padding: 6px 12px; border-radius: 6px; border: 1px solid var(--line);
+                     background: var(--panel); cursor: pointer; }
+  .nav .primary { background: var(--accent); color: var(--chosen-text); border-color: var(--accent); }
+  .dl { background: var(--panel); }
+  details { margin-top: 16px; }
+  pre { white-space: pre-wrap; font: 13px/1.5 ui-monospace, Menlo, monospace; color: var(--muted); }
+  .status { font-size: 13px; color: var(--muted); margin-top: 4px; }
+  .status.bad { color: #c2410c; font-weight: 600; }
+  kbd { font: 12px ui-monospace, Menlo, monospace; border: 1px solid var(--line); border-radius: 4px; padding: 0 4px; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Blind caption rating · __BATCH_LABEL__</h1>
+    <span class="muted" id="count"></span>
+  </header>
+  <div id="status" class="status"></div>
+  <div class="bar"><div id="progress"></div></div>
+  <div class="card">
+    <div class="img"><img id="img" alt="image to rate"></div>
+    <div class="caption" id="caption"></div>
+    <div class="label">Score</div>
+    <div class="scores" id="scores"></div>
+    <div class="label">Why (optional, toggle any)</div>
+    <div class="tags" id="tags"></div>
+    <div class="label">Note (optional) <span class="muted">· <kbd>/</kbd> to type, <kbd>Esc</kbd> to leave</span></div>
+    <textarea id="note" placeholder="Anything worth remembering about this one"></textarea>
+    <div class="nav">
+      <div>
+        <button id="prev">&larr; Prev</button>
+        <button id="next" class="primary">Save &amp; next (Enter)</button>
+        <button id="nextUnrated">Next unrated</button>
+      </div>
+      <span><button class="dl" id="saveNow">Save now</button> <button class="dl" id="showCsv">Show CSV</button></span>
+    </div>
+  </div>
+  <textarea id="csvBox" readonly style="display:none; min-height:180px; margin-top:12px; font: 12px ui-monospace, Menlo, monospace"></textarea>
+  <p class="muted">Keys: <kbd>1</kbd>–<kbd>5</kbd> score, letter keys toggle reasons, <kbd>Enter</kbd> next,
+    <kbd>&larr;</kbd>/<kbd>&rarr;</kbd> move, <kbd>0</kbd> clear. Progress autosaves in this browser.
+    Every change is saved to <code>data/handrate/ratings/</code> by <code>scripts/rate_server.py</code>;
+    the line under the title confirms each save. <b>Show CSV</b> displays the raw ratings to copy by hand.</p>
+  <details open><summary>Rubric (same text the judge sees)</summary><pre id="rubric"></pre></details>
+</main>
+<script>
+const ITEMS = __ITEMS__;
+const RUBRIC = __RUBRIC__;
+const BATCH = __BATCH__;
+const STORE = "handrate-v1-" + BATCH;
+const TAGS = [
+  ["h", "hallucination", "states something not in the image"],
+  ["w", "wrong_subject", "main object, count or action is wrong"],
+  ["v", "vague", "generic, could fit many images"],
+  ["m", "missing_detail", "misses a salient detail"],
+  ["s", "spam", "keyword lists, SEO, boilerplate"],
+  ["x", "not_description", "title, ad, or commentary, not about the pixels"],
+  ["t", "text_copy", "copies text written in the image instead of describing it"],
+  ["u", "unverifiable", "names, brands or places that can't be checked from the image"],
+  ["g", "grammar", "hard to read or broken"],
+];
+let ratings = {};
+try { ratings = JSON.parse(localStorage.getItem(STORE) || "{}"); } catch (e) {}
+let i = 0;
+
+const $ = (id) => document.getElementById(id);
+$("rubric").textContent = RUBRIC;
+for (let s = 1; s <= 5; s++) {
+  const b = document.createElement("button");
+  b.textContent = s;
+  b.onclick = () => setScore(s);
+  $("scores").appendChild(b);
+}
+for (const [key, tag, help] of TAGS) {
+  const b = document.createElement("button");
+  b.innerHTML = `<kbd>${key}</kbd>${tag.replace("_", " ")}`;
+  b.title = help;
+  b.dataset.tag = tag;
+  b.onclick = () => toggleTag(tag);
+  $("tags").appendChild(b);
+}
+
+function save() { try { localStorage.setItem(STORE, JSON.stringify(ratings)); } catch (e) {} }
+function entry() {
+  const k = ITEMS[i].key;
+  if (!ratings[k]) ratings[k] = { rating: 0, tags: [], note: "", rated_at: "" };
+  ratings[k].tags = ratings[k].tags || [];
+  ratings[k].note = ratings[k].note || "";
+  return ratings[k];
+}
+function current() { return ratings[ITEMS[i].key]; }
+function isRated(x) { return ratings[x.key] && ratings[x.key].rating > 0; }
+
+function render() {
+  const it = ITEMS[i];
+  const r = current() || { rating: 0, tags: [], note: "" };
+  $("img").src = it.img;
+  $("caption").textContent = it.caption;
+  [...$("scores").children].forEach((b, k) => b.classList.toggle("on", k + 1 === r.rating));
+  [...$("tags").children].forEach((b) => b.classList.toggle("on", (r.tags || []).includes(b.dataset.tag)));
+  $("note").value = r.note || "";
+  const done = ITEMS.filter(isRated).length;
+  $("count").textContent = `${i + 1} / ${ITEMS.length} · ${done} rated`;
+  $("progress").style.width = `${(100 * done) / ITEMS.length}%`;
+}
+function touch(e) {
+  e.rated_at = new Date().toISOString(); save(); render();
+  scheduleSave();
+  if (ITEMS.every(isRated)) $("count").textContent += " · page done, open the next batch";
+}
+function setScore(s) { const e = entry(); e.rating = s; touch(e); }
+function toggleTag(tag) {
+  const e = entry();
+  e.tags = e.tags.includes(tag) ? e.tags.filter((t) => t !== tag) : [...e.tags, tag];
+  touch(e);
+}
+function go(k) { i = Math.max(0, Math.min(ITEMS.length - 1, k)); render(); }
+function nextUnrated() {
+  const k = ITEMS.findIndex((x, j) => j > i && !isRated(x));
+  const k0 = ITEMS.findIndex((x) => !isRated(x));
+  go(k >= 0 ? k : k0 >= 0 ? k0 : i);
+}
+function csvCell(s) { return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; }
+function csvText() {
+  const lines = ["key,rating,tags,note,rated_at"];
+  for (const it of ITEMS) {
+    const r = ratings[it.key];
+    const ok = r && r.rating > 0;
+    lines.push([it.key, ok ? r.rating : "", ok ? (r.tags || []).join(";") : "",
+                csvCell(ok ? r.note || "" : ""), ok ? r.rated_at : ""].join(","));
+  }
+  return lines.join("\n") + "\n";
+}
+let saveTimer = null;
+function setStatus(msg, bad = false) { $("status").textContent = msg; $("status").classList.toggle("bad", bad); }
+function scheduleSave() { clearTimeout(saveTimer); saveTimer = setTimeout(saveToServer, 300); }
+async function saveToServer() {
+  if (location.protocol === "file:") {
+    setStatus("NOT SAVED TO DISK: start scripts/rate_server.py and open this page at http://localhost:8765/pages/" + BATCH + ".html", true);
+    return;
+  }
+  try {
+    const r = await fetch(`/save/${BATCH}`, { method: "POST", headers: { "Content-Type": "text/csv" }, body: csvText() });
+    if (!r.ok) throw new Error(r.status);
+    setStatus(`saved ✓ data/handrate/ratings/handrate_${BATCH}.csv · ${new Date().toLocaleTimeString()}`);
+  } catch (err) {
+    setStatus("NOT SAVED: is scripts/rate_server.py still running?", true);
+  }
+}
+function showCsv() {
+  const box = $("csvBox");
+  box.style.display = box.style.display === "none" ? "block" : "none";
+  box.value = csvText();
+  box.focus(); box.select();
+}
+
+$("note").addEventListener("input", (ev) => {
+  const e = entry();
+  e.note = ev.target.value;
+  e.rated_at = new Date().toISOString();
+  save();
+  scheduleSave();
+});
+$("prev").onclick = () => go(i - 1);
+$("next").onclick = () => go(i + 1);
+$("nextUnrated").onclick = nextUnrated;
+$("saveNow").onclick = saveToServer;
+$("showCsv").onclick = showCsv;
+document.addEventListener("keydown", (e) => {
+  if (e.target === $("note")) {
+    if (e.key === "Escape") $("note").blur();
+    else if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) { e.preventDefault(); $("note").blur(); go(i + 1); }
+    return;
+  }
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  const tag = TAGS.find(([key]) => key === e.key);
+  if (e.key >= "1" && e.key <= "5") setScore(Number(e.key));
+  else if (tag) toggleTag(tag[1]);
+  else if (e.key === "/") { e.preventDefault(); $("note").focus(); }
+  else if (e.key === "Enter") { e.preventDefault(); go(i + 1); }
+  else if (e.key === "0") { delete ratings[ITEMS[i].key]; save(); render(); }
+  else if (e.key === "ArrowLeft") go(i - 1);
+  else if (e.key === "ArrowRight") go(i + 1);
+});
+function parseCsv(text) {  // RFC 4180: quoted fields may hold commas, quotes, newlines
+  const rows = []; let row = [], cell = "", q = false;
+  for (let k = 0; k < text.length; k++) {
+    const c = text[k];
+    if (q) {
+      if (c === '"' && text[k + 1] === '"') { cell += '"'; k++; }
+      else if (c === '"') q = false;
+      else cell += c;
+    } else if (c === '"') q = true;
+    else if (c === ",") { row.push(cell); cell = ""; }
+    else if (c === "\n") { row.push(cell); rows.push(row); row = []; cell = ""; }
+    else if (c !== "\r") cell += c;
+  }
+  if (cell || row.length) { row.push(cell); rows.push(row); }
+  return rows;
+}
+async function loadFromServer() {
+  // Ratings on disk win over this browser's copy unless the browser's is newer,
+  // so a fresh browser never overwrites saved work.
+  if (location.protocol === "file:") return;
+  try {
+    const r = await fetch(`/ratings/handrate_${BATCH}.csv`, { cache: "no-store" });
+    if (!r.ok) return;
+    const [header, ...rows] = parseCsv(await r.text());
+    const col = Object.fromEntries(header.map((h, j) => [h, j]));
+    for (const row of rows) {
+      const key = row[col.key], rating = Number(row[col.rating]);
+      if (!key || !rating) continue;
+      const disk = { rating, tags: row[col.tags] ? row[col.tags].split(";") : [], note: row[col.note] || "",
+                     rated_at: row[col.rated_at] || "" };
+      const local = ratings[key];
+      if (!local || !local.rating || (local.rated_at || "") < disk.rated_at) ratings[key] = disk;
+    }
+    save();
+  } catch (err) { /* no saved file yet */ }
+}
+loadFromServer().then(() => {
+  go(Math.max(0, ITEMS.findIndex((x) => !isRated(x))));  // resume at the first unrated item
+  saveToServer();  // confirms the server is reachable on load
+});
+</script>
+</body>
+</html>

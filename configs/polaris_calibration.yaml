@@ -1,0 +1,33 @@
+run_name: polaris-calib-v1
+seed: 0
+
+judge:
+  model: Qwen/Qwen3-VL-8B-Instruct
+  fallback_model: Qwen/Qwen2.5-VL-7B-Instruct   # switch here if the smoke test fails
+  rubric: prompts/judge_rubric_v1.md
+  max_image_side: 512        # client-side resize; throughput knob, benchmarked in the smoke test
+  max_model_len: 4096
+  gpu_memory_utilization: 0.90
+  top_logprobs: 20
+  chunk_size: 512            # rows per vLLM call and per resumable output file
+
+smoke_test:
+  n_rows: 50
+  max_parse_failure_rate: 0.02
+  bench_rows: 256
+
+clip:
+  model: openai/clip-vit-large-patch14   # DataComp-style filter model; also used for pool embeddings
+  batch_size: 256
+
+polaris:
+  train_shards: 6            # ~15.7K ratings; enough to fit isotonic. Test split is scored in full.
+
+cost:
+  gpu: A100-80GB (RunPod Secure Cloud)
+  usd_per_hour: null         # fill in from the RunPod console to get $ per 1K images
+
+gate:                        # mirrors PREREGISTRATION.md; do not edit after scores exist
+  min_spearman_gain: 0.05
+  ci: 0.95
+  n_boot: 2000

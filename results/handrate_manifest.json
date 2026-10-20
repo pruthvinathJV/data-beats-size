@@ -1,0 +1,14 @@
+{
+  "ratings_csv_sha256": "94b2beae46c96cdc256a822b9afb823e06b14b8a663d593a9dfe50d678e2f3b0",
+  "items_parquet_sha256": "2a794719518b6ff41f1a1229b668627b82a1de6852fed856716c2b119c0ad610",
+  "rubric_sha256": "377eb6f13f29675dffda7e600190d52d7f115dabfecb8abeb7c742c33418032a",
+  "n_items": 200,
+  "n_rated": 200,
+  "score_counts": {
+    "1": 4,
+    "2": 65,
+    "3": 102,
+    "4": 19,
+    "5": 10
+  }
+}

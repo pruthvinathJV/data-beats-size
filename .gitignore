@@ -1,0 +1,13 @@
+.env
+.venv
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.pytest_cache/
+.ruff_cache/
+wandb/
+data/
+results/*.parquet
+results/*.png
+.DS_Store
+.playwright-mcp/

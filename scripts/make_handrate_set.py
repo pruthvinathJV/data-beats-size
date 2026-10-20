@@ -19,42 +19,17 @@ import hashlib
 import heapq
 import io
 import json
-import os
-import tarfile
 from pathlib import Path
 
 import pandas as pd
-import requests
 from PIL import Image
 
 from datacurate.io import DATA, ROOT  # loads .env first
 from datacurate.judge import resize_max_side
+from datacurate.webdata import CC12M_URL, iter_samples
 
 SHARD = "cc12m-train-2175.tar"
-URL = f"https://huggingface.co/datasets/pixparse/cc12m-wds/resolve/main/{SHARD}"
-
-
-def iter_samples(url: str, scan_limit: int | None):
-    """Stream a WebDataset tar, yielding (key, {ext: bytes}) per sample."""
-    headers = {"Authorization": f"Bearer {os.environ['HF_TOKEN']}"} if os.getenv("HF_TOKEN") else {}
-    with requests.get(url, stream=True, headers=headers, timeout=60) as r:
-        r.raise_for_status()
-        r.raw.decode_content = True
-        with tarfile.open(fileobj=r.raw, mode="r|") as tf:
-            key, sample, seen = None, {}, 0
-            for m in tf:
-                if not m.isfile():
-                    continue
-                k, ext = m.name.rsplit(".", 1)
-                if key is not None and k != key:
-                    yield key, sample
-                    sample, seen = {}, seen + 1
-                    if scan_limit and seen >= scan_limit:
-                        return
-                key = k
-                sample[ext] = tf.extractfile(m).read()
-            if sample:
-                yield key, sample
+URL = CC12M_URL.format(2175)
 
 
 def jpeg(img: Image.Image, side: int, quality: int = 88) -> bytes:

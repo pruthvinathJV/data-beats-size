@@ -49,4 +49,31 @@ If the gate fails, arm D becomes "CLIPScore top-k with judge as tiebreaker" and 
 
 ## Amendments
 
-(none)
+### A1 (2026-10-20, before any model scoring): scope for a 1-2 day, ~$25-30 budget; synthetic and agentic arms
+
+Reason: extend the study to two further data interventions, synthetic re-captioning and agent-proposed filter rules with human approval, while fitting a fixed time and compute budget. Made before any judge, CLIPScore, or training output exists. Where this section conflicts with the sections above, this section governs.
+
+**Pool and arm size.** Pool = CC12M shards 0000-0019 (~100K pairs). Arms are **25K examples each** (was 50K), keeping a ~25-35% keep rate.
+
+**Arms.**
+- 0: base SmolVLM-256M-Instruct, no fine-tune.
+- A: 25K random from the raw pool.
+- B: 25K random from the B pool = raw pool after heuristic filters (incl. near-blank image filter), the agent-proposed rules the author approved (below), CLIP-embedding near-duplicate removal, and decontamination against Karpathy test images.
+- C: B pool, CLIPScore top 25K.
+- D: B pool, judge top 25K (if the gate fails: CLIPScore top 25K re-ranked by judge as tiebreaker, as specified above).
+- **E (new): synthetic captions.** The 25K images of arm B, re-captioned by a generator (InternVL3-2B) with the fixed prompt "Describe this image in one sentence.". A critic (the selection judge) scores each caption; captions below the critic threshold (calibrated score < 3.5) are regenerated once at a higher temperature, then the better of the two is kept. Diversity control: a caption that is a near-duplicate (token Jaccard >= 0.9) of an already-accepted caption is regenerated once. Contamination control: arm B images are already decontaminated. Reported: acceptance rate, retry rate, caption length, distinct-n.
+
+**Model families.** Selection judge and arm E critic: Qwen3-VL-8B-Instruct. Arm E generator: InternVL3-2B. Evaluation judge: Phi-3.5-vision-instruct. Three different families so no model scores text from its own family. (Gemma 3 was considered and dropped: gated with manual approval.)
+
+**Agentic human-in-the-loop rule loop.** An LLM agent reads judge-vs-human disagreements and the author's failure-mode tags, proposes caption filter rules, and tests each with tools (agreement with the author's labels, share of the pool removed). The author approves or rejects each rule with a written reason; only approved rules enter the B pool. All proposals, test results and decisions are logged. Because the author's labels are used to test rules, the hand-rated set is no longer a clean held-out check for any rule-based scorer; the judge-vs-CLIPScore gate on it is computed before the agent sees it.
+
+**Training.** Arms A-E x 3 seeds = 15 LoRA runs, identical hyperparameters and step counts.
+
+**Evaluation.** Karpathy test, 5K images: CIDEr and CHAIR (CHAIRi, CHAIRs) on all images; evaluation judge on a fixed random 2K subset. Polos is dropped (time). Hypotheses H1-H3 unchanged, with 25K arms. New:
+- **H4:** E > A on CIDEr.
+- **H5 (exploratory, no direction):** E vs D on CIDEr and CHAIR.
+Mean caption length per arm is reported for every arm, since synthetic captions may differ in length and style from web captions.
+
+**Cut (named as limitations and future work):** diffusion fine-tuning, DPO, Airflow DAG, human pairwise preference study, LoRA vs QLoRA table, 2B confirmation run.
+
+**Budget guard.** Long-running GPU jobs stop the pod on completion.

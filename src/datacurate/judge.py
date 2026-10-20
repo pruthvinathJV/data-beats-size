@@ -20,8 +20,9 @@ MIN_DIGIT_MASS = 0.5  # below this, the judge did not really answer with a score
 
 
 def load_rubric(path: str | Path) -> tuple[str, str]:
-    text = Path(path).read_text().strip()
-    return text, hashlib.sha256(text.encode()).hexdigest()[:12]
+    """Rubric text and the SHA-256 of the file, matching results/handrate_manifest.json."""
+    raw = Path(path).read_bytes()
+    return raw.decode().strip(), hashlib.sha256(raw).hexdigest()
 
 
 def resize_max_side(img: Image.Image, max_side: int | None) -> Image.Image:

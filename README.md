@@ -55,7 +55,7 @@ On macOS with an iCloud-synced Desktop, sync keeps marking the venv's `.pth` fil
 skips them (`import datacurate` fails). Keep the venv outside the synced folder and symlink it:
 `uv venv --python 3.12 ~/.venvs/data-beats-size && ln -s ~/.venvs/data-beats-size .venv`.
 
-Copy `data/handrate/` to the pod (it is gitignored), e.g. `aws s3 sync data/handrate s3://$S3_BUCKET/handrate`.
+`data/handrate/` is gitignored; it is uploaded to `s3://$S3_BUCKET/inputs/handrate/` and the pod pulls it with `scripts/pull_inputs.py`.
 
 **RunPod (Secure Cloud, 1x A100 80GB; L40S 48GB fallback):**
 
@@ -63,6 +63,7 @@ Copy `data/handrate/` to the pod (it is gitignored), e.g. `aws s3 sync data/hand
 cd /workspace && git clone <this repo> && cd <repo>
 cp .env.example .env            # fill in keys; uncomment HF_HOME=/workspace/hf_cache
 bash scripts/pod_setup.sh && source .venv/bin/activate
+python scripts/pull_inputs.py                    # hand-rating set from S3, checked against the fingerprint
 python scripts/smoke_test_judge.py --benchmark   # exit 1 => switch to fallback model in config
 python scripts/score_polaris.py                  # resumable; rerun after a restart
 python scripts/score_handrate.py                 # refuses to run without your ratings

@@ -1,4 +1,4 @@
-run_name: data-beats-size
+run_name: vlm-data-curation
 seed: 0
 
 judge:

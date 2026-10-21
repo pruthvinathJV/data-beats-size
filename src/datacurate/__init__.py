@@ -1,1 +1,1 @@
-"""Data beats size: curation pipeline for a small VLM."""
+"""Curation pipeline for a small VLM: which 25K training pairs to keep."""

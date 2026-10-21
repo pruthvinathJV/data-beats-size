@@ -1,7 +1,7 @@
 [project]
 name = "datacurate"
 version = "0.1.0"
-description = "Data beats size: curating noisy web image-caption data for a small VLM"
+description = "Which 25K? Curating noisy web image-caption data for a small VLM"
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.10"

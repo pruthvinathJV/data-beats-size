@@ -1,4 +1,4 @@
-# Data beats size: technical report
+# Which 25K? Technical report
 
 > **In plain words.** Most web captions are not descriptions. We compared five ways of picking 25,000 training examples
 > for a small captioning model and gave each resulting model the same exam. Grading captions with a larger AI model,
@@ -15,7 +15,7 @@ This is a controlled ablation of data curation, down-selection and synthetic re-
 
 | | |
 |---|---|
-| **Best method** | Keep the 25% of web pairs a calibrated VLM judge rates highest: **CIDEr 0.432 → 0.741** (+71%) and **hallucinating captions 11.5% → 7.5%**, vs random data |
+| **Best method** | Keep the 25% of web pairs a human-validated VLM judge rates highest: **CIDEr 0.432 → 0.741** (+71%) and **hallucinating captions 11.5% → 7.5%**, vs random data |
 | **Why the judge, not CLIPScore** | On 200 hand-rated web captions the judge's ranking matches the human's twice as well (0.52 vs 0.25). On a clean public benchmark they look almost equal (0.83 vs 0.82) |
 | **Did not help** | CLIPScore selection (CIDEr unchanged). AI-rewritten captions: an independent AI grader likes them (4.58 / 5), but CIDEr drops and hallucinated objects rise |
 | **Robust winner** | Only the judge-selected arm is strong on all three measures |
@@ -93,7 +93,7 @@ Grading 100K pairs with the judge is the expensive step, so the plan required th
 | The judge was too lenient on a vague or partial caption | 2 | "the coat is black" for a child with an umbrella |
 | The judge caught an error both humans missed | 1 | "…of a man with skis" for a woman with skis |
 
-One surprise: the judge's single most likely grade ranked captions better on Polaris (0.879) than its probability-weighted grade (0.832).
+One surprise: the judge's single most likely grade ranked captions better on Polaris (0.879) than its probability-weighted grade (0.832). Argmax would have cleared the Polaris part of the gate (0.879 vs CLIPScore's 0.819); it was never scored on the hand-rated set. It was not adopted: the scoring rule was pre-registered, switching after seeing results is a forking path, and argmax's five tied grade buckets are poorly suited to top-k selection.
 
 ---
 
@@ -155,6 +155,7 @@ CLIPScore prefers long, keyword-heavy captions; the judge picks mostly different
 **Reading it**
 
 - **D\* wins clearly.** Best CIDEr and lowest hallucination, and the spread across its 3 runs (0.013) is tiny next to the gap. Its captions are no longer than A's, so the gain is not about length.
+- **What the CIs cover.** The paired bootstrap resamples test images, so it captures exam noise, not training noise. Training noise is the ± over 3 seeds: the D\*−A gap (+0.308) is about 10× the largest seed SD (0.029).
 - **CLIPScore selection** reduced hallucination a little but did not raise CIDEr, and made captions longer (14.8 words).
 - **AI-rewritten captions (E)** taught the model a wordy style. Per named object it hallucinates no more than C (8.5%), but it names more objects, so more captions contain a mistake, and long captions match the short human references less well.
 - **The independent grader favors long captions.** It ranks the base model (4.61) and E (4.58) highest, the two wordiest, and barely penalizes their hallucinations, matching the leniency seen in §2. **D\* is the only arm strong on all three measures.**
@@ -189,7 +190,7 @@ Encoding the image is the main cost, so shrinking images saved more than shorten
 
 ## 6. Limitations
 
-- One data source (CC12M), one small model, one photo-only exam. How filtering affects illustrations or other image types is not measured.
+- One data source (CC12M), one small model, one photo-only exam (COCO). Judge-selected captions are shorter and plainer than CLIPScore's (13.2 vs 18.6 words), closer to COCO's style, so part of D\*'s gain may be style match; an out-of-domain exam (Flickr30k or nocaps) is the next check. No larger model was compared, so the study says nothing about curation vs. model size. How filtering affects illustrations or other image types is not measured.
 - CHAIR is a simplified re-implementation and CIDEr uses a Python tokenizer: compare arms with each other, not with published numbers.
 - One human rater. 20 of the first 45 ratings were revised for consistency (audit notes kept); ratings 46–200 were made offline and transcribed. A fingerprint (SHA-256) of the ratings was committed before any scoring.
 - The hand-rated set was also used to test the agent's rules, so it is not untouched data for rule-based scorers (the checkpoint was computed first).

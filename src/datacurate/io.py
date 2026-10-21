@@ -26,7 +26,7 @@ def init_wandb(cfg: dict, job_type: str, **extra_config):
     import wandb
 
     return wandb.init(
-        project=os.getenv("WANDB_PROJECT", "data-beats-size"),
+        project=os.getenv("WANDB_PROJECT", "vlm-data-curation"),
         name=f"{cfg['run_name']}-{job_type}",
         job_type=job_type,
         config={**cfg, **extra_config},

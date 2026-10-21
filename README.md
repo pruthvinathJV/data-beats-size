@@ -1,4 +1,4 @@
-# Data beats size
+# Which 25K? Curating noisy web data for a small VLM
 
 **Which training data makes a small image-captioning model better?**
 Same model, same training recipe, same 25,000 examples. Only the choice of data changes.
@@ -6,7 +6,7 @@ Same model, same training recipe, same 25,000 examples. Only the choice of data 
 > **In plain words.** Most image captions on the web are adverts, keyword lists or copied text, not descriptions.
 > We tried five ways of choosing which 25,000 image–caption pairs to teach a small model with, and gave every version the same exam.
 > Letting a larger AI model grade the captions (after checking its grades against human ones) and keeping the best quarter
-> produced by far the best captioner. A cheaper similarity score did not help, and AI-rewritten captions made the model wordier rather than better.
+> produced by far the best captioner (an exploratory arm, see Results). A cheaper similarity score did not help, and AI-rewritten captions made the model wordier rather than better.
 
 ## How the study works
 
@@ -41,9 +41,9 @@ Same model, same training recipe, same 25,000 examples. Only the choice of data 
 
 ## Findings
 
-1. **Choosing data with a VLM judge worked best by far:** CIDEr up 71% and hallucinating captions down by a third, compared with random data.
+1. **Choosing data with a VLM judge worked best by far (exploratory arm D\*):** CIDEr up 71% and hallucinating captions down by a third, compared with random data. The gap is about 10× the spread between training runs.
 2. **CLIPScore did not help, and the reason shows up in the data.** On 200 web captions rated by hand, the judge's ranking matched the human's about twice as well as CLIPScore's (rank agreement 0.52 vs 0.25), even though the two look almost equal on a clean public benchmark (0.83 vs 0.82).
-3. **AI-written captions: the verdict depends on the metric.** The model learned to write long, detailed captions. An independent AI grader liked them (4.58 / 5, close to D\*'s 4.54), but they matched human references less well and named more objects that are not in the image. Only D\* is strong on all three measures.
+3. **AI-written captions: the verdict depends on the metric.** The model learned to write long, detailed captions. An independent AI grader liked them (4.58 / 5, close to D\*'s 4.54), but it rated the untrained base model highest of all (4.61), so it rewards long captions. They also matched human references less well and named more objects that are not in the image, which is why CIDEr and hallucination carry the conclusion. Only D\* is strong on all three measures.
 4. **164 test images were hiding in the training data.** They were removed before training, so no model saw its exam in advance.
 5. **An AI agent proposed cleaning rules; a human reviewed and rejected all of them.** The agent's mistakes (duplicate rules, memorizing the labeled examples, a missing safety check) are documented.
 
@@ -57,7 +57,7 @@ Same model, same training recipe, same 25,000 examples. Only the choice of data 
 | **Hallucinated object** | an object named in the caption that is not in the image, measured with CHAIR (lower is better) |
 | **CLIPScore** | a fast image–text similarity score from the CLIP model |
 | **VLM judge** | a larger vision-language model (Qwen3-VL-8B) that reads a written rubric and grades each caption 1–5 |
-| **Calibrated** | the judge's grades were checked against human grades and mapped onto the human scale |
+| **Calibrated** | the judge's grades were checked against human grades and mapped onto the human scale; this fixes the scale, not the ranking, so it does not change which pairs are selected |
 | **Polaris** | a public set of 131K human ratings of image captions, used to check the judge |
 | **SmolVLM-256M + LoRA** | the small model being trained, and a method that trains only a small add-on (2% of its weights) |
 | **Rank agreement** | Spearman correlation: 1 = same ranking as the human, 0 = unrelated |

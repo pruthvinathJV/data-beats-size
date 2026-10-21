@@ -121,3 +121,7 @@ artifacts/      training sets, generated captions, hand ratings
 tests/          unit tests
 ```
 </details>
+
+## License
+
+Code and documentation: [MIT](LICENSE). Files in `artifacts/` are derived from CC12M, COCO and Polaris and stay under those datasets' own terms; no images or model weights are included.

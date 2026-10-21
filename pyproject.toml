@@ -3,6 +3,7 @@ name = "datacurate"
 version = "0.1.0"
 description = "Data beats size: curating noisy web image-caption data for a small VLM"
 readme = "README.md"
+license = "MIT"
 requires-python = ">=3.10"
 dependencies = [
   "numpy",

@@ -1,80 +1,107 @@
 # Data beats size
 
-Curate a noisy web image-caption pool (CC12M) four ways, LoRA fine-tune the same
-small VLM (SmolVLM-256M) on each 50K-example arm, and measure which curation
-method improves captioning on COCO. The judge used for curation is checked
-against human labels (Polaris) before it is trusted.
+**Which training data makes a small vision-language model caption better?**
+Same model, same recipe, same 25,000 examples. Only the choice of data changes.
 
-Hypotheses, metrics and the decision rule for the expensive judge run are fixed
-in [PREREGISTRATION.md](PREREGISTRATION.md).
+> **In plain words.** Most image captions on the web are adverts, keyword lists or copied text, not descriptions.
+> We tried five ways of choosing which 25,000 image–caption pairs to teach a small model with, and tested each on the same exam.
+> Letting a larger AI model grade the captions, after checking its grades against human ones, and keeping the best quarter
+> produced by far the best captioner. A cheaper similarity score did not help, and AI-rewritten captions made the model wordier rather than better.
 
-## Status
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/results_dark.png">
+  <img alt="CIDEr and hallucination rate for six training-data arms; the VLM-judge-selected arm scores 0.74 CIDEr and 7.5% hallucination, best on both" src="docs/results_light.png">
+</picture>
 
-| Step | State |
+| Training data (25K pairs from CC12M) | CIDEr-D ↑ | Hallucinated object ↓ |
+|---|---:|---:|
+| No fine-tune | 0.202 | 12.6% |
+| Random | 0.432 | 11.5% |
+| Cleaned (filters, dedup, decontamination) | 0.479 | 11.4% |
+| CLIPScore top 25% | 0.423 | 10.0% |
+| **VLM-judge top 25%** | **0.741** | **7.5%** |
+| Synthetic captions (generator + critic) | 0.393 | 13.3% |
+
+<sub>SmolVLM-256M + LoRA, COCO Karpathy test (5,000 images), mean of 3 seeds. The judge-selected arm was added after the pre-registered gate and is reported as exploratory.</sub>
+
+## Findings
+
+1. **Selecting data with a calibrated VLM judge raised CIDEr by 71% and cut hallucinations by a third** compared with random data.
+2. **CLIPScore selection did not help.** On 200 hand-rated web captions the judge agreed with the human twice as well as CLIPScore (Spearman 0.52 vs 0.25), even though the two are nearly tied on a clean benchmark (0.83 vs 0.82).
+3. **Synthetic captions: it depends on the metric.** The student learned long, detailed captions. An independent VLM judge likes them (4.58 / 5, close to the winner's 4.54), but CIDEr drops and more captions contain a hallucinated object. Only the judge-selected arm is strong on all three metrics.
+4. **164 test images were hiding in the training pool.** Decontamination removed them.
+5. **An agent proposed filter rules; a human rejected all of them.** Its failures (duplicates, overfitting to the labels, a missing guard) are documented.
+
+## What's inside
+
+| Technique | Where |
 |---|---|
-| 0. Blind hand-rating set (200 CC12M pairs) | done (fingerprint in `results/handrate_manifest.json`) |
-| 1. Judge smoke test + throughput table | done |
-| 2. Polaris + hand-rated judge validation, gate | running |
-| 3. Pool: download, CLIP embed, agent rules (human-approved), filter, dedup, decontaminate | code ready |
-| 4. Arms A-D (25K each) | code ready |
-| 5. Arm E: synthetic captions, generator/critic loop | code ready |
-| 6. LoRA training (5 arms x 3 seeds) | code ready |
-| 7. Karpathy-test eval: CIDEr, CHAIR, cross-family judge | code ready |
+| Data curation: heuristic filtering, embedding-based **deduplication**, test-set **decontamination** | `filter_pool.py`, `src/datacurate/filters.py` |
+| **Down-selection** by CLIPScore vs a **VLM judge**, at a fixed budget | `make_arms.py` |
+| VLM judge **calibrated against human labels** (Polaris + 200 blind ratings), bootstrap CIs, human ceiling, **failure-mode** analysis | `notebooks/01_polaris_calibration.ipynb` |
+| **Synthetic data**: generator/critic loop with **diversity** and **contamination controls** | `recaption.py` |
+| **Agentic, tool-using** rule proposal with a **human-in-the-loop** approval gate | `agent_rules.py`, `results/agent/` |
+| **Controlled ablation**: pre-registered, 3 seeds, paired bootstrap | `PREREGISTRATION.md`, `eval_metrics.py` |
+| **LoRA** fine-tuning of SmolVLM-256M | `train_lora.py` |
+| Infrastructure: **Ray Data**, **vLLM**, AWS S3, W&B, resumable stages | `build_pool.py`, `embed_pool.py`, `run_rest.sh` |
 
-## Layout
+## Pipeline
 
+```mermaid
+flowchart LR
+    W[CC12M<br/>100K pairs] --> F[Filter · dedup<br/>decontaminate]
+    F --> S{Select 25K}
+    S -->|random| A[A / B]
+    S -->|CLIPScore| C[C]
+    S -->|VLM judge| D[D*]
+    S -->|re-caption| E[E]
+    H[200 human labels<br/>+ Polaris 131K] -.validate.-> J[Judge<br/>Qwen3-VL-8B]
+    J -.-> D
+    J -.critic.-> E
+    A & C & D & E --> T[LoRA<br/>3 seeds each] --> X[COCO eval<br/>CIDEr · CHAIR · judge]
 ```
-configs/      run configs (one YAML per stage)
-prompts/      versioned judge rubric; its hash is logged with every score
-src/datacurate/
-  judge.py        vLLM judge, probability-weighted 1-5 score from 1-token logprobs
-  clipscore.py    CLIP embeddings + CLIPScore
-  polaris.py      Polaris loading, rating collapse, rater pairs for the human ceiling
-  stats.py        rank correlations, image-clustered bootstrap, pre-registered gate
-  calibration.py  isotonic fit, ECE, MAE, reliability table
-  scoring.py      chunked, resumable scoring loop; throughput and $ per 1K images
-scripts/      entry points (see runbook)
-notebooks/    analysis; reads scored parquet, no GPU needed
-tests/        unit tests for parsing, stats, calibration
-```
 
-## Runbook
+## Read more
 
-**Local (laptop), before touching a GPU:**
+| | |
+|---|---|
+| [REPORT.md](REPORT.md) | Full technical report: method, judge validation, all results, limitations |
+| [PREREGISTRATION.md](PREREGISTRATION.md) | Hypotheses and decision rules, committed before any model output |
+| [`results/`](results/) | Every number in the report, as JSON and CSV |
+
+## Run it
 
 ```bash
-uv venv --python 3.12 && uv pip install -e ".[dev,notebook]"
-cp .env.example .env            # fill in keys
-python scripts/make_handrate_set.py
-python scripts/rate_server.py             # keep running; open http://localhost:8765/pages/batch_01.html
-                                          # 14 pages x 15 items; every change saves to data/handrate/ratings/
-python scripts/merge_handrate.py          # -> data/handrate/ratings.csv, prints progress
-git add PREREGISTRATION.md && git commit -m "Pre-register judge gate and hypotheses"
-```
+uv venv --python 3.12 && uv pip install -e ".[gpu,dev]"      # GPU machine (A100 80GB used here)
+cp .env.example .env                                        # HF token required; W&B and S3 optional
+python scripts/check_env.py
 
-On macOS with an iCloud-synced Desktop, sync keeps marking the venv's `.pth` files hidden and Python
-skips them (`import datacurate` fails). Keep the venv outside the synced folder and symlink it:
-`uv venv --python 3.12 ~/.venvs/data-beats-size && ln -s ~/.venvs/data-beats-size .venv`.
+# Hand-rated set: rebuild the same 200 pairs, then use the committed ratings
+python scripts/make_handrate_set.py && cp artifacts/handrate/ratings.csv data/handrate/
 
-`data/handrate/` is gitignored; it is uploaded to `s3://$S3_BUCKET/inputs/handrate/` and the pod pulls it with `scripts/pull_inputs.py`.
-
-**RunPod (Secure Cloud, 1x A100 80GB; L40S 48GB fallback):**
-
-```bash
-cd /workspace && git clone <this repo> && cd <repo>
-cp .env.example .env            # fill in keys; uncomment HF_HOME=/workspace/hf_cache
-bash scripts/pod_setup.sh && source .venv/bin/activate
-python scripts/pull_inputs.py                    # hand-rating set from S3, checked against the fingerprint
-python scripts/smoke_test_judge.py --benchmark   # exit 1 => switch to fallback model in config
-python scripts/score_polaris.py                  # resumable; rerun after a restart
-python scripts/score_handrate.py                 # refuses to run without your ratings
+python scripts/smoke_test_judge.py --benchmark              # judge check + throughput table
+python scripts/score_polaris.py && python scripts/score_handrate.py
+jupyter nbconvert --execute --to notebook --inplace notebooks/01_polaris_calibration.ipynb   # gate
 python scripts/build_pool.py && python scripts/fetch_coco.py && python scripts/embed_pool.py
-python scripts/agent_rules.py                    # proposals only; approve them into configs/filters.yaml
-bash scripts/run_rest.sh                         # filter -> judge pool -> arms -> arm E -> train -> eval
+python scripts/agent_rules.py                               # proposals only; approved rules go in configs/filters.yaml
+bash scripts/run_rest.sh                                    # filter → arms → re-caption → train → evaluate
+python scripts/make_figure.py                               # README chart
 ```
 
-Then pull `data/scores/` back (S3) and run `notebooks/01_polaris_calibration.ipynb` locally.
-It writes `results/polaris_gate.json` with the GO / NO-GO decision.
+About 5.5 GPU-hours on one A100 ($10.01 in total). Every stage is resumable. Settings live in `configs/default.yaml`.
 
-Set `cost.usd_per_hour` in the config from the RunPod console so throughput is reported in $ per 1K images.
-Stop the pod when a step finishes.
+To label your own set instead: `python scripts/rate_server.py`, rate in the browser, then `python scripts/merge_handrate.py`.
+
+<details>
+<summary>Repository layout</summary>
+
+```
+configs/        run settings and filter rules
+prompts/        versioned judge rubric (its hash is logged with every score)
+src/datacurate/ judge, CLIPScore, calibration, statistics, filters, CIDEr/CHAIR
+scripts/        one script per stage; run_rest.sh chains them
+notebooks/      judge calibration analysis (no GPU needed)
+results/        all outputs behind REPORT.md
+tests/          unit tests
+```
+</details>

@@ -1,0 +1,12 @@
+{
+  "n": 25000,
+  "accepted_first_try": 0.9402,
+  "retried": 0.0598,
+  "retry_kept": 0.0411,
+  "final_below_threshold": 0.0287,
+  "near_duplicates_first_pass": 11,
+  "mean_words": 20.11,
+  "distinct_1": 0.0612,
+  "distinct_2": 0.2851,
+  "mean_critic": 4.002
+}

@@ -14,7 +14,7 @@ N = 25_000
 
 
 def main():
-    cfg = load_config("configs/polaris_calibration.yaml")
+    cfg = load_config("configs/default.yaml")
     seed = cfg["seed"]
     pool = pd.read_parquet(DATA / "pool" / "pool.parquet", columns=["key", "caption", "removed_by", "clipscore"])
     b = pool[pool.removed_by == ""]

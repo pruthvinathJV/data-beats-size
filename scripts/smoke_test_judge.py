@@ -28,7 +28,7 @@ from datacurate.stats import corr
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--config", default="configs/polaris_calibration.yaml")
+    ap.add_argument("--config", default="configs/default.yaml")
     ap.add_argument("--model", default=None)
     ap.add_argument("--benchmark", action="store_true")
     args = ap.parse_args()

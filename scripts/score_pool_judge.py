@@ -1,5 +1,7 @@
-"""Stage 4a: selection judge over the B pool (only run if the gate passed).
+"""Stage 4a: selection judge over the whole raw pool.
 
+Scoring every raw pair (not just the filtered B pool) lets this run while the
+filter rules are still under review; arms only use scores of B-pool rows.
 Resumable: one parquet per chunk under data/pool/judge_chunks/.
 
     python scripts/score_pool_judge.py
@@ -20,10 +22,9 @@ CHUNK = 4096
 
 
 def main():
-    cfg = load_config("configs/polaris_calibration.yaml")
+    cfg = load_config("configs/default.yaml")
     jc = cfg["judge"]
-    pool = pd.read_parquet(DATA / "pool" / "pool.parquet", columns=["key", "caption", "removed_by"])
-    b = pool[pool.removed_by == ""].reset_index(drop=True)
+    b = pd.read_parquet(DATA / "pool" / "raw", columns=["key", "caption"]).reset_index(drop=True)
     raw = pd.read_parquet(DATA / "pool" / "raw", columns=["key", "img"]).set_index("key").img
     judge = VLMJudge(jc["model"], jc["rubric"], max_image_side=jc["max_image_side"],
                      max_model_len=jc["max_model_len"], gpu_memory_utilization=jc["gpu_memory_utilization"],

@@ -14,6 +14,7 @@ Phases (each loads one model, so run them in order; outputs are resumable):
 import argparse
 import io
 import json
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -21,8 +22,10 @@ from PIL import Image
 
 from datacurate.calibration import fit_isotonic
 from datacurate.io import DATA, RESULTS, load_config
+from datacurate.judge import resize_max_side
 
-GENERATOR = "OpenGVLab/InternVL3-2B"
+GENERATOR = "OpenGVLab/InternVL3-2B-hf"  # native transformers port; the remote-code variant hangs in vLLM 0.32
+GEN_BATCH = 64
 PROMPT = "Describe this image in one sentence."
 THRESHOLD = 3.5  # calibrated critic score
 JACCARD_DUP = 0.9
@@ -39,20 +42,35 @@ def images_for(keys: pd.Series) -> list[Image.Image]:
     return [Image.open(io.BytesIO(_IMG[k])).convert("RGB") for k in keys]
 
 
-def generate(keys: pd.Series, temperature: float, seed: int) -> list[str]:
-    from vllm import LLM, SamplingParams
+def generate(keys: pd.Series, temperature: float, seed: int, ckpt: Path) -> list[str]:
+    """Caption with the generator via transformers (InternVL does not load in vLLM 0.32 here).
 
-    from datacurate.judge import to_data_url
+    Checkpoints every 20 batches to `ckpt` so a restart resumes instead of regenerating.
+    """
+    import torch
+    from transformers import AutoModelForImageTextToText, AutoProcessor
 
-    llm = LLM(model=GENERATOR, trust_remote_code=True, max_model_len=4096,
-              limit_mm_per_prompt={"image": 1}, gpu_memory_utilization=0.85, seed=seed)
-    params = SamplingParams(temperature=temperature, max_tokens=60, seed=seed)
-    out = []
-    for s in range(0, len(keys), 2048):
-        imgs = images_for(keys.iloc[s : s + 2048])
-        convs = [[{"role": "user", "content": [{"type": "image_url", "image_url": {"url": to_data_url(im, 448)}},
-                                                {"type": "text", "text": PROMPT}]}] for im in imgs]
-        out += [o.outputs[0].text.strip().split("\n")[0] for o in llm.chat(convs, params, use_tqdm=True)]
+    done = pd.read_parquet(ckpt).caption.tolist() if ckpt.exists() else []
+    torch.manual_seed(seed + len(done))
+    proc = AutoProcessor.from_pretrained(GENERATOR)
+    proc.tokenizer.padding_side = "left"
+    model = AutoModelForImageTextToText.from_pretrained(GENERATOR, torch_dtype=torch.bfloat16).cuda().eval()
+    prompt = proc.apply_chat_template([{"role": "user", "content": [{"type": "image"}, {"type": "text", "text": PROMPT}]}],
+                                      add_generation_prompt=True)
+    sample = {"do_sample": True, "temperature": temperature, "top_p": 0.9} if temperature > 0 else {"do_sample": False}
+    out = list(done)
+    for b, s in enumerate(range(len(done), len(keys), GEN_BATCH)):
+        imgs = [resize_max_side(im, 448) for im in images_for(keys.iloc[s : s + GEN_BATCH])]
+        enc = proc(text=[prompt] * len(imgs), images=imgs, return_tensors="pt", padding=True, crop_to_patches=False)
+        enc = {k: v.cuda() for k, v in enc.items()}
+        enc["pixel_values"] = enc["pixel_values"].to(torch.bfloat16)
+        with torch.inference_mode():
+            ids = model.generate(**enc, max_new_tokens=60, **sample)
+        texts = proc.batch_decode(ids[:, enc["input_ids"].shape[1] :], skip_special_tokens=True)
+        out += [t.strip().split("\n")[0] for t in texts]
+        if b % 20 == 0:
+            pd.DataFrame({"caption": out}).to_parquet(ckpt)
+            print(f"generated {len(out):,}/{len(keys):,}", flush=True)
     return out
 
 
@@ -88,12 +106,12 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--phase", required=True, choices=["generate", "critique", "retry", "critique2", "finalize"])
     args = ap.parse_args()
-    cfg = load_config("configs/polaris_calibration.yaml")
+    cfg = load_config("configs/default.yaml")
     W.mkdir(parents=True, exist_ok=True)
     keys = pd.read_parquet(DATA / "arms" / "B.parquet", columns=["key"]).key
 
     if args.phase == "generate":
-        pd.DataFrame({"key": keys, "cap1": generate(keys, 0.0, cfg["seed"])}).to_parquet(W / "gen1.parquet")
+        pd.DataFrame({"key": keys, "cap1": generate(keys, 0.0, cfg["seed"], W / "gen1.ckpt.parquet")}).to_parquet(W / "gen1.parquet")
     elif args.phase == "critique":
         g = pd.read_parquet(W / "gen1.parquet")
         g["score1"] = critique(g.key, g.cap1.tolist(), cfg)
@@ -102,7 +120,8 @@ def main():
     elif args.phase == "retry":
         g = pd.read_parquet(W / "crit1.parquet")
         redo = g[(g.score1 < THRESHOLD) | g.dup1]
-        pd.DataFrame({"key": redo.key, "cap2": generate(redo.key, 0.7, cfg["seed"] + 1)}).to_parquet(W / "gen2.parquet")
+        caps = generate(redo.key.reset_index(drop=True), 0.7, cfg["seed"] + 1, W / "gen2.ckpt.parquet")
+        pd.DataFrame({"key": redo.key.to_numpy(), "cap2": caps}).to_parquet(W / "gen2.parquet")
     elif args.phase == "critique2":
         r = pd.read_parquet(W / "gen2.parquet")
         r["score2"] = critique(r.key, r.cap2.tolist(), cfg)

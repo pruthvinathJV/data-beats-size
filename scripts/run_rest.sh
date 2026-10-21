@@ -10,7 +10,7 @@ stage() { echo "=== $(date -u +%T) $*"; }
 
 stage filter;        python scripts/filter_pool.py
 # Judge scores are needed for D (if GO) or the exploratory D* (A2), and for nothing else.
-stage judge-pool;    python scripts/score_pool_judge.py
+stage judge-pool;    [ -f data/pool/judge_scores.parquet ] || python scripts/score_pool_judge.py
 stage arms;          python scripts/make_arms.py
 for phase in generate critique retry critique2 finalize; do
   if [ "$phase" = generate ] && [ -f data/arms/e_work/gen1.parquet ]; then continue; fi

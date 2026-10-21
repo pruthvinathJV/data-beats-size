@@ -1,0 +1,72 @@
+[
+  {
+    "rule": {
+      "name": "text_copy",
+      "regex": "^(?=.*\\b(?:guide|list|recipe|types|basic|steps|how to|tips|facts|history|tutorial|manual))"
+    },
+    "why": "High precision (0.89) and low pool removal (4.26%) indicate it effectively removes text-copy captions while preserving good ones.",
+    "test": {
+      "fires_on_hand_rated": 9,
+      "mean_rating_when_fired": 2.11,
+      "precision_bad": 0.89,
+      "recall_bad": 0.12,
+      "pool_removal": 0.0426
+    }
+  },
+  {
+    "rule": {
+      "name": "generic_caption",
+      "regex": "^(?=.*\\b(?:basic|types|how to|tips|facts|history|tutorial|manual|guide|list|recipe))"
+    },
+    "why": "High precision (0.89) and low pool removal (4.17%) indicate it effectively removes generic captions while preserving good ones.",
+    "test": {
+      "fires_on_hand_rated": 9,
+      "mean_rating_when_fired": 2.11,
+      "precision_bad": 0.89,
+      "recall_bad": 0.12,
+      "pool_removal": 0.0417
+    }
+  },
+  {
+    "rule": {
+      "name": "generic",
+      "regex": "^(?=.*\\b(?:basic|types|how to|tips|facts|history|tutorial|manual|guide|list|recipe))"
+    },
+    "why": "High precision (0.89) and low pool removal (4.17%) indicate it effectively removes generic captions while preserving good ones.",
+    "test": {
+      "fires_on_hand_rated": 9,
+      "mean_rating_when_fired": 2.11,
+      "precision_bad": 0.89,
+      "recall_bad": 0.12,
+      "pool_removal": 0.0417
+    }
+  },
+  {
+    "rule": {
+      "name": "generic_detail",
+      "regex": "^(?=.*\\b(?:basic|types|how to|tips|facts|history|tutorial|manual|guide|list|recipe))"
+    },
+    "why": "High precision (0.89) and low pool removal (4.17%) indicate it effectively removes generic captions while preserving good ones.",
+    "test": {
+      "fires_on_hand_rated": 9,
+      "mean_rating_when_fired": 2.11,
+      "precision_bad": 0.89,
+      "recall_bad": 0.12,
+      "pool_removal": 0.0417
+    }
+  },
+  {
+    "rule": {
+      "name": "unverifiable_spam",
+      "regex": "^(?=.*\\b(?:unverifiable|spam|text_copy|not_description|grammar|vague|missing_detail|wrong_subject))"
+    },
+    "why": "Captions flagged for unverifiable or spam content are often low-quality and should be filtered out.",
+    "test": {
+      "fires_on_hand_rated": 0,
+      "mean_rating_when_fired": null,
+      "precision_bad": null,
+      "recall_bad": 0.0,
+      "pool_removal": 0.0002
+    }
+  }
+]

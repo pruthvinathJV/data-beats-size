@@ -22,7 +22,7 @@ MIN_RATED = 150  # below this the paired CI is too wide for the gate to mean muc
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--config", default="configs/polaris_calibration.yaml")
+    ap.add_argument("--config", default="configs/default.yaml")
     args = ap.parse_args()
 
     d = DATA / "handrate"

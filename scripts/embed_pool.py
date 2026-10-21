@@ -42,7 +42,7 @@ def run(src, dst, model: str, columns: list[str]):
 
 
 def main():
-    cfg = load_config("configs/polaris_calibration.yaml")
+    cfg = load_config("configs/default.yaml")
     ray.init()
     pool = run(POOL / "raw", POOL / "embeddings.parquet", cfg["clip"]["model"], ["key", "caption", "img"])
     print(f"pool: {len(pool):,} embedded, CLIPScore mean {pool.clipscore.mean():.3f}")

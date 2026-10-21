@@ -1,0 +1,36 @@
+[
+  {
+    "rule": {
+      "name": "contains_boilerplate",
+      "regex": ".*(stock illustration|vector illustration|royalty free|easy to edit|delete easily|layered vector illustration)",
+      "field": "n_words",
+      "op": ">",
+      "value": 1
+    },
+    "why": "Removes captions with common stock-photo boilerplate phrases that are uninformative and often rated low.",
+    "test": {
+      "fires_on_hand_rated": 11,
+      "mean_rating_when_fired": 2.91,
+      "precision_bad": 0.09,
+      "recall_bad": 0.01,
+      "pool_removal": 0.0617
+    }
+  },
+  {
+    "rule": {
+      "name": "contains_spam_keywords",
+      "regex": ".*(Technology|Etsy|Shutterstock|PERSON> letter)",
+      "field": "n_words",
+      "op": ">",
+      "value": 1
+    },
+    "why": "Removes captions with spammy keywords like 'Technology' or site names that are often rated low.",
+    "test": {
+      "fires_on_hand_rated": 4,
+      "mean_rating_when_fired": 2.5,
+      "precision_bad": 0.5,
+      "recall_bad": 0.03,
+      "pool_removal": 0.0041
+    }
+  }
+]

@@ -40,23 +40,12 @@ def check_s3():
     return f"write/read/delete ok on s3://{bucket}"
 
 
-def check_runpod():
-    r = requests.post(
-        "https://api.runpod.io/graphql",
-        params={"api_key": os.environ["RUNPOD_API_KEY"]},
-        json={"query": "{ myself { clientBalance } }"},
-        timeout=20,
-    )
-    r.raise_for_status()
-    return f"credit balance ${r.json()['data']['myself']['clientBalance']:.2f}"
-
-
 CHECKS = {
     "HF_TOKEN": check_hf,
     "WANDB_API_KEY": check_wandb,
     "S3_BUCKET": check_s3,
-    "RUNPOD_API_KEY": check_runpod,
 }
+REQUIRED = {"HF_TOKEN"}  # W&B and S3 are optional
 
 if __name__ == "__main__":
     if not (ROOT / ".env").exists():
@@ -64,8 +53,8 @@ if __name__ == "__main__":
     failed = False
     for var, fn in CHECKS.items():
         if not os.getenv(var):
-            print(f"  --  {var}: not set")
-            failed = True
+            print(f"  --  {var}: not set" + ("" if var in REQUIRED else " (optional)"))
+            failed |= var in REQUIRED
             continue
         try:
             print(f"  ok  {var}: {fn()}")

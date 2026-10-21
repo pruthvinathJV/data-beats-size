@@ -1,0 +1,201 @@
+key,rating,tags,note,rated_at
+012418948,3,missing_detail,There is a swimming pool too [revised 4->3: 'hotel' unverifiable; visible part 'a building' is accurate but generic],2026-10-20T17:12:49.372Z
+012422751,3,missing_detail;spam,There is another bike [revised 4->3: ID/filename boilerplate caps at 3],2026-10-20T17:12:49.372Z
+012423271,3,unverifiable;spam,"cant verify whether those wings help lion to fly to the sky or not [revised tags: wings are drawn; 'can fly' is unverifiable, not invented]",2026-10-20T17:13:07.699Z
+012420326,2,spam;hallucination,[revised 3->2: keyword list with invented object (mermaid) caps at 2],2026-10-20T17:12:49.372Z
+012422000,2,unverifiable,cant verify its african style or not,2026-10-20T16:44:49.696Z
+012418759,2,spam;hallucination,no yellow background and 'Technology' is spam,2026-10-20T16:45:30.113Z
+012421261,2,text_copy,,2026-10-20T16:45:34.311Z
+012420460,3,spam,Illustration stock illustration,2026-10-20T16:46:02.110Z
+012418916,2,not_description,yoga is there but mentioned a lot about benefits of yoga but not exact description of the image,2026-10-20T16:46:36.813Z
+012422570,2,hallucination,there is only one animal in it,2026-10-20T16:46:48.680Z
+012417937,2,text_copy,,2026-10-20T16:47:01.845Z
+012419939,5,,,2026-10-20T16:47:34.261Z
+012419455,3,not_description;unverifiable,additional detail about the time period which we cant verify,2026-10-20T16:48:02.045Z
+012418369,3,,[revised 5->3: 'apartment' unverifiable; visible part 'a building' is accurate but generic],2026-10-20T17:12:49.372Z
+012423169,3,unverifiable,cant verify whether its of guest bathroom or its location of basement [revised 2->3: 'guest'/'basement' unverifiable; visible part 'a bathroom' is accurate but generic],2026-10-20T17:12:49.372Z
+012422367,2,unverifiable;not_description,"there are man and woman in their party wear, we cant verify the location and also wrong description [revised 1->2: unverifiable names/place don't count against; visible part (two people in party wear at an event) not contradicted] [revised tags: nothing in the caption is contradicted]",2026-10-20T17:47:25.464Z
+012417858,3,spam;unverifiable,[revised 2->3: 'Malagasy' unverifiable; '(Shutterstock)' boilerplate caps at 3],2026-10-20T17:18:31.476Z
+012418523,3,unverifiable,cant verify which protest,2026-10-20T17:04:52.937Z
+012418738,1,wrong_subject;hallucination;spam,ad + main subject is man and woman in a marriage setting,2026-10-20T17:05:20.137Z
+012419927,2,grammar;vague,related to music,2026-10-20T17:05:46.970Z
+012418755,5,,,2026-10-20T17:06:23.418Z
+012419640,3,spam;grammar,"grammar is not complete and also spam of ""PERSON> letter """,2026-10-20T17:06:57.865Z
+012422765,2,text_copy,,2026-10-20T17:07:05.118Z
+012418178,3,spam,"""Face of young beautiful girl with a bright make-up and stock photos"" is spam [revised 4->3: stock-photo boilerplate caps at 3]",2026-10-20T17:18:31.476Z
+012418600,3,,"[revised 5->3: product title; visible part 'a throw blanket', names unverifiable]",2026-10-20T17:18:31.476Z
+012420879,3,unverifiable,"""<PERSON> in the movie"" its not a person -- its a dog. And also we cant verify the movie name",2026-10-20T17:08:35.567Z
+012419111,2,unverifiable;spam,I guess its a ad of the restaurant -- the visible thing is just a home beside lawn,2026-10-20T17:09:19.740Z
+012420351,3,unverifiable,cant verify Northern Territory,2026-10-20T17:09:39.697Z
+012419845,1,wrong_subject;hallucination,its a snow mountain,2026-10-20T17:09:59.517Z
+012422742,3,unverifiable,lavender gown is there but other details cant be verified. [revised 2->3: names unverifiable; visible part 'a person in a lavender gown' is accurate but generic],2026-10-20T17:18:31.476Z
+012422864,3,unverifiable;spam,it is just a fabric in light grey color + E952 is spam [revised 2->3: product code is boilerplate; visible part (light grey woven fabric) accurate],2026-10-20T17:47:25.464Z
+012422823,3,unverifiable,it is a farm but other things are unverifiable [revised 2->3: 'Amazon' is boilerplate; visible part (a farm) accurate],2026-10-20T17:47:25.464Z
+012418235,2,missing_detail;spam;unverifiable,there is no person and also a spam,2026-10-20T17:19:03.639Z
+012419606,3,not_description,"modern kitchen is there but preparing meals/refreshments are hallucinated [revised 4->3: listing copy caps at 3; 'prepare meals' is an invitation, not a claim]",2026-10-20T17:47:25.464Z
+012420834,5,,,2026-10-20T17:20:05.306Z
+012420503,4,spam,"Even though its a brand --> HUF is mentioned on the cap [revised 5->4: accurate on the visible hat (white, back view, HUF), but a product title]",2026-10-20T17:47:25.464Z
+012418767,2,spam;unverifiable;missing_detail,there are only 2 cucumbers which are peeled,2026-10-20T17:21:14.505Z
+012418925,2,grammar;unverifiable,,2026-10-20T17:21:36.090Z
+012419689,3,grammar;spam,[revised 5->3: pet-shop sales copy caps at 3; visible part is a fish],2026-10-20T17:47:25.464Z
+012419233,3,spam,"there are tags also included: ""European Championships, Belgium, Sports, Kit, Tops, Fashion, Football, Moda, Sport"" -- donno whether to give 5 or not [revised 5->3: keyword list caps at 3]",2026-10-20T17:47:25.464Z
+012418857,3,spam;unverifiable,Sipo is not there but abstract art is there [revised 2->3: seller name is boilerplate; visible part (abstract art) accurate],2026-10-20T17:47:25.464Z
+012417856,2,text_copy,[revised 5->2: copied title that does not name the visible content caps at 2],2026-10-20T17:47:25.464Z
+012418172,3,spam,"""stock images"" is spam and other description is correct [revised 2->3: 'stock images' caps at 3; description otherwise accurate]",2026-10-20T17:47:25.464Z
+012419613,2,unverifiable,City buildings are there,2026-10-20T17:25:21.013Z
+012421469,3,unverifiable,"Manchester [revised 4->3: place unverifiable, photographer credit is boilerplate; visible part is a wedding]",2026-10-20T17:47:25.464Z
+012423030,5,,,2026-10-20T18:01:50.000Z
+012423038,2,not_description,"image is a Dracula movie poster, title in image is Prince of Darkness, not a description of the scene",2026-10-20T18:02:05.000Z
+012422380,2,not_description;grammar;unverifiable,"broken listicle headline, no description of the bearded man portrait; ranking and list cant be verified",2026-10-20T18:02:20.000Z
+012417675,3,not_description;unverifiable,"product title for an MSI gaming laptop, brand and laptop are visible; GT80 Titan model cant be verified",2026-10-20T18:02:35.000Z
+012418693,1,wrong_subject;not_description,"image is completely blank white, no Beatles, road or album art visible",2026-10-20T18:02:50.000Z
+012420837,3,not_description;text_copy,product listing for a hoodie; most of the caption is the slogan printed on the hoodie itself,2026-10-20T18:03:05.000Z
+012423369,5,,,2026-10-20T18:03:20.000Z
+012422980,3,not_description;spam;unverifiable,"blog post title, chippy paint on the furniture is visible; Vaseline method and source credit are not a description",2026-10-20T18:03:35.000Z
+012418080,3,spam;missing_detail,'This image may contain' tag list boilerplate caps at 3; blue plaid shirt and its pattern are not described,2026-10-20T18:03:50.000Z
+012421048,3,not_description;unverifiable,"art listing title, framed painting in a living room is visible; artist and painting title cant be verified",2026-10-20T18:04:05.000Z
+012419453,4,unverifiable,"black and white, man crouching in front of a car with other men is accurate; police car and detectives cant be verified from the image",2026-10-20T18:04:20.000Z
+012418842,5,,,2026-10-20T18:04:35.000Z
+012422058,3,spam;unverifiable,painted fish on a wall is accurate; 'stock illustration' boilerplate caps at 3 and Portugal cant be verified,2026-10-20T18:04:50.000Z
+012417696,3,not_description;spam,"blog post title for a quilting step, chevron rag quilt is visible; Hope Corner Farm is a source credit",2026-10-20T18:05:05.000Z
+012418748,3,spam;unverifiable,masked figure holding a launcher is visible; 'royalty free illustration' boilerplate caps at 3 and 'East' soldier cant be verified,2026-10-20T18:05:20.000Z
+012420227,3,spam;unverifiable,"keyword tag list, punk styled woman is visible; band and person names cant be verified",2026-10-20T18:08:50.000Z
+012419386,2,spam;hallucination,keyword list includes chef jackets and a shirt dress which are not in the image; man in a grey shirt and jeans is visible,2026-10-20T18:09:05.000Z
+012421409,3,spam,abstract rainbow swirl description is accurate; 'royalty free illustration' boilerplate caps at 3,2026-10-20T18:09:20.000Z
+012421992,3,unverifiable,hotel name cant be verified; a lobby or reception area is accurate but generic,2026-10-20T18:09:35.000Z
+012420798,2,wrong_subject;unverifiable,"image is an interior dining and living room, no villa exterior or gulf visible; location cant be verified",2026-10-20T18:09:50.000Z
+012421026,2,vague;not_description,image is a singer performing on stage; caption says nothing about music or performance,2026-10-20T18:10:05.000Z
+012421916,3,not_description;unverifiable,"pricing headline, Honda SUV is visible; year, model and pricing cant be verified",2026-10-20T18:10:20.000Z
+012420490,4,unverifiable,women players running out onto a stadium field is accurate; team names and stadium cant be verified,2026-10-20T18:10:35.000Z
+012418628,2,text_copy,"slide text copied word for word, not a description of the image",2026-10-20T18:10:50.000Z
+012420646,3,not_description;unverifiable,"futuristic city drawing on a wood print is visible; 1916, title and artist cant be verified",2026-10-20T18:11:05.000Z
+012420845,5,,,2026-10-20T18:11:20.000Z
+012419532,2,wrong_subject;unverifiable,"walls are textured yellow plaster, but the room is a bathroom with a toilet, not a family room",2026-10-20T18:11:35.000Z
+012418319,2,not_description,"image is just the word belize in colourful painted lettering; caption is brand commentary, not a description of it",2026-10-20T18:11:50.000Z
+012420031,2,spam;hallucination,"only one beaded necklace is visible; caption lists brooches, rings, bracelets and boxes that are not in the image, plus a keyword list",2026-10-20T18:12:05.000Z
+012418108,3,grammar;unverifiable;not_description,"caption is cut off at 'ext'; dark Cadillac SUV is visible, year and Sport package cant be verified",2026-10-20T18:12:20.000Z
+012420113,3,unverifiable,"protest rally crowd with banners is visible; groups, cause, place and date cant be verified",2026-10-20T18:12:04.000Z
+012420019,2,spam;not_description,keyword list and repeated ad title; does not describe the hand holding a scan with a Christmas tree shape in a hospital room,2026-10-20T18:12:14.000Z
+012418917,4,missing_detail,aerial view of vehicles pulling through a drop off line is accurate; the large shredding truck in the foreground is not mentioned,2026-10-20T18:12:24.000Z
+012422272,3,spam;unverifiable;not_description,wedding reception room is visible; Image 5 is numbering boilerplate and the venue cant be verified,2026-10-20T18:12:34.000Z
+012423281,3,unverifiable,floor plan is visible; building name and place cant be verified and no rooms or layout details are given,2026-10-20T18:12:44.000Z
+012417774,2,wrong_subject;hallucination;spam,"image is a four tier purple floral cake, no cookies, cupcakes or cake pops visible; long keyword list at the end",2026-10-20T18:12:54.000Z
+012420105,2,wrong_subject;hallucination;spam,"setup is a car racing simulator with a wheel and triple monitors, not a flight or airplane simulator; rest is a keyword list",2026-10-20T18:13:04.000Z
+012418687,2,not_description;unverifiable,"caption is just two masked names, no description of the man and woman in the day and night halves of the drawing",2026-10-20T18:13:14.000Z
+012421012,2,spam;not_description,DeviantArt collection promo and keyword list; does not describe the Thundercats character holding a weapon,2026-10-20T18:13:24.000Z
+012420067,3,spam,"three faceless boys, three faceless girls and white background are accurate; stock illustration boilerplate caps at 3",2026-10-20T18:13:34.000Z
+012421025,3,spam;unverifiable,wedding scene is visible; photographer credit is boilerplate and the venue and place cant be verified,2026-10-20T18:13:44.000Z
+012421957,3,spam;unverifiable,"four lions resting in grass is accurate; road, park and country cant be verified and Landscape is a category tag",2026-10-20T18:13:54.000Z
+012423121,3,not_description;unverifiable,"product title; ornate patterned shawl is visible, its product name and pashmina cant be verified",2026-10-20T18:14:04.000Z
+012418162,3,unverifiable,"caption only says a restaurant in generic terms, though diners and a waiter are visible; hotel and place cant be verified",2026-10-20T18:14:14.000Z
+012420345,3,not_description;spam,"product listing; a pair of grey socks is visible, cashmere and five new colours cant be seen",2026-10-20T18:14:24.000Z
+012419796,4,unverifiable,"two men in a helicopter over mountains is accurate; rescue team, RAF, helicopter type and place cant be verified",2026-10-20T18:14:34.000Z
+012418775,2,not_description;unverifiable,"comic page with the Doctor, the TARDIS and companions is visible; caption is publisher, series and issue info, not a description",2026-10-20T18:14:44.000Z
+012419552,4,unverifiable,"server putting finishing touches on table settings in a restaurant is accurate; his name, 24 years, opening day and place cant be verified",2026-10-20T18:14:54.000Z
+012419385,2,not_description;grammar,"caption is just a masked name and a vague broken phrase, no description of the man in a black tunic against a wall",2026-10-20T18:15:04.000Z
+012422409,3,not_description;text_copy,product listing for a white short sleeve baby one piece; Turn Up the A.C. is the text printed on it,2026-10-20T18:15:14.000Z
+012421448,4,unverifiable,"football players in white and blue uniforms celebrating is accurate; scorer, timing and the tied score cant be verified",2026-10-20T18:15:24.000Z
+012418312,3,spam,blue shark with an open toothed mouth is accurate; stock illustration boilerplate caps at 3,2026-10-20T18:15:34.000Z
+012421493,3,unverifiable,"rendered floor plan is visible; plan name, community and place cant be verified and no layout details are given",2026-10-20T18:15:44.000Z
+012419895,2,not_description;unverifiable,"travel post title; image is hills reflected in a lake, no road, car or driving is visible, and the route and place cant be verified",2026-10-20T18:15:54.000Z
+012423254,2,not_description;unverifiable,"listicle headline; image is a box of assorted donuts, 47 dishes are not shown and Canadian origin cant be verified",2026-10-20T18:16:04.000Z
+012418089,3,spam;unverifiable,"an aircraft carrier and a second warship at sea are visible; ship names, sea and attack risk cant be verified, and the Navy file credit is boilerplate",2026-10-20T18:16:14.000Z
+012422002,3,spam;unverifiable,tall fountain jet over a lake with a city behind is accurate; stock photos boilerplate caps at 3 and Lake Geneva cant be verified,2026-10-20T18:16:24.000Z
+012421060,3,not_description;unverifiable,"artwork title; an angry cartoon cat face matches giving a warning, character names and the other character cant be verified",2026-10-20T18:16:34.000Z
+012420612,3,text_copy;spam,caption is the title printed in the graphic itself plus an author credit; no description of the mountain logo or background,2026-10-20T18:16:44.000Z
+012418160,3,not_description;unverifiable,"a man operating a tall rig with gauges is visible, but the caption explains the oil and gas filling process and C5 damper, which cant be seen in the still",2026-10-20T18:16:54.000Z
+012419852,2,spam;hallucination,"woman in a white blazer outfit is there, but keyword list adds a checked blazer and floral pumps that are not in the image",2026-10-20T18:17:04.000Z
+012421092,2,spam;hallucination,"ornate metal wall decor is there, but there is no black tree and it is not over a door; caption is an SEO product listing",2026-10-20T18:17:14.000Z
+012422044,3,not_description,"Christmas cookies on a wreath are visible, caption is a product design title, not a description",2026-10-20T18:17:24.000Z
+012418131,4,unverifiable,"shrimp tempura with rice on an airline tray is accurate, first meal cant be verified",2026-10-20T18:17:34.000Z
+012417935,3,spam,"scale model military helicopter close up is accurate, gallery name and category keyword list are boilerplate, caps at 3",2026-10-20T18:17:44.000Z
+012421636,4,grammar,"cartoon woman chef holding a blank banner is accurate, wording is a clumsy noun pile",2026-10-20T18:17:54.000Z
+012420184,4,unverifiable,"plane spraying a trail across the sky is accurate, model, material, place and date cant be verified",2026-10-20T18:18:04.000Z
+012418128,3,missing_detail;vague,"city and stadium are there, but caption misses the mountain and sea that dominate the image",2026-10-20T18:18:14.000Z
+012423221,3,not_description;unverifiable,"No Face mask postcard is visible, caption is a product title, film and studio names cant be verified",2026-10-20T18:18:24.000Z
+012422678,3,spam;unverifiable,"white goose close up is accurate, stock photography boilerplate caps at 3, male and farmyard cant be verified",2026-10-20T18:18:34.000Z
+012418980,3,text_copy;not_description,"caption is the slogan printed on the black mug plus the product word mugs, not a description",2026-10-20T18:18:44.000Z
+012419044,4,,"two large white pendant fixtures above the island are prominent, description is accurate",2026-10-20T18:18:54.000Z
+012422341,3,spam,"men in adult pirate costumes are the main subject, caption is a costume keyword list, caps at 3",2026-10-20T18:19:04.000Z
+012423323,3,spam;not_description,"a bench is visible, the rest is product sales copy about materials and converting to a table, not a description",2026-10-20T18:19:14.000Z
+012418846,3,spam;unverifiable,"girl lighting a cigarette in the dark is accurate, stock video boilerplate caps at 3, night club cant be verified",2026-10-20T18:19:24.000Z
+012419028,2,not_description;unverifiable,"news headline about an opening, playground slides are visible but no splash park or opening is shown",2026-10-20T18:19:34.000Z
+012421492,3,missing_detail,"hotel cant be verified, visible part is a building, accurate but generic",2026-10-20T18:19:44.000Z
+012420768,2,not_description;unverifiable,"a man sitting in a worn room is visible, the rest is theatre history and an apartment story that cant be checked",2026-10-20T18:19:54.000Z
+012417837,3,not_description;unverifiable,"a 2018 five pound coin with the Queen is visible, the Remembrance Day silver proof version cant be verified from this side",2026-10-20T18:20:04.000Z
+012422785,2,not_description;unverifiable,"black and white portrait of a woman is there, caption is only a feature title with a masked name, no description",2026-10-20T18:20:14.000Z
+012417916,3,not_description;unverifiable,"carved seated figure sculpture is visible, soapstone, signature and Qing details cant be verified",2026-10-20T18:20:24.000Z
+012419400,2,not_description,"title only, two men in a dance like hold are there but the caption does not describe them",2026-10-20T18:20:34.000Z
+012423197,2,not_description;spam,"portrait of a woman is there, the rest is opinion about her acting and films plus a keyword list, not a description",2026-10-20T18:20:44.000Z
+012422226,3,text_copy;not_description,"caption is the slogan printed on the t-shirt plus the product word, the man wearing it is not described",2026-10-20T18:20:54.000Z
+012420984,3,spam;unverifiable,"four dogs posing in a clinic is accurate, photo credit boilerplate caps at 3, names, base and date cant be verified",2026-10-20T18:21:04.000Z
+012422343,4,unverifiable,"man posing behind a Cornell hurdle on a track is accurate, coach title, date and place cant be verified",2026-10-20T18:21:14.000Z
+012421599,3,spam;unverifiable,"long wing plane over fields is accurate, photo credit boilerplate caps at 3, place and test flight cant be verified",2026-10-20T18:21:24.000Z
+012422522,3,spam,"doodle figure with a machete and sugar cane is accurate, royalty free and usage copy is boilerplate, caps at 3",2026-10-20T18:21:34.000Z
+012417756,3,unverifiable;missing_detail,"a framed picture is on a bedroom wall, names cant be verified and the bed that fills the room is not mentioned",2026-10-20T18:21:44.000Z
+012423289,2,spam;grammar;text_copy,"image is a Happy Birthday graphic with a cake, caption is repeated SEO spam about Felix and Christmas ringtones, not a description",2026-10-20T18:21:54.000Z
+012421423,2,spam;not_description;hallucination,"bare feet in the forest are visible, rest is personal commentary and a keyword list with minimalist shoes and baby feet that are not pictured",2026-10-20T18:22:04.000Z
+012419327,2,not_description;unverifiable,"travel headline, South Africa and Cape Town cant be verified and the apartment room interior is not described",2026-10-20T18:22:14.000Z
+012418969,2,hallucination,"only one cow is visible and only its rear half, standing in a field with trees",2026-10-20T18:22:24.000Z
+012419218,4,grammar;unverifiable,"man, woman and two girls mixing in a kitchen are visible, two daughter is broken grammar and pumpkin mix cant be verified",2026-10-20T18:22:34.000Z
+012420493,3,spam;unverifiable,"photo credit is boilerplate so caps at 3, woman singing on stage with an orchestra is visible, opera and role cant be verified",2026-10-20T18:22:44.000Z
+012421674,3,text_copy,"caption mostly copies the words on the print and changes my to our, grey typography print is accurate",2026-10-20T18:22:54.000Z
+012423209,3,spam;not_description,"product listing and keyword list cap at 3, black LA logo is visible",2026-10-20T18:23:04.000Z
+012419975,2,spam;hallucination,"repeated SEO product names, blue and black North Face fleece jacket is visible but no hood is visible for the hoodie claims",2026-10-20T18:23:14.000Z
+012422549,2,text_copy;not_description,"caption is the slogan printed on the black t-shirt, not a description of the shirt, and it is a t-shirt not a sweater",2026-10-20T18:23:24.000Z
+012422763,3,spam;not_description,"product listing with product code caps at 3, white t-shirt with a Shining face design is visible",2026-10-20T18:23:34.000Z
+012417983,3,spam,"sunflower seed icon in purple is accurate, stock illustration and for any design sales copy cap at 3",2026-10-20T18:23:44.000Z
+012420143,3,spam;unverifiable,"keyword list caps at 3, woman wearing a vinyl raincoat is visible, North Face brand cant be verified",2026-10-20T18:23:54.000Z
+012421874,3,spam;grammar,"stock image boilerplate caps at 3, vertical portrait of a border collie outdoors is accurate, caption is cut off at the end",2026-10-20T18:24:04.000Z
+012421684,2,not_description;unverifiable,"news headline about GDP, an aerial city and port are visible but not described, Lion City cant be verified",2026-10-20T18:24:14.000Z
+012420309,2,spam;hallucination;not_description,"sales commentary and keyword list, man in a beige corduroy jacket is visible, green, denim and leather jackets are not",2026-10-20T18:24:24.000Z
+012420538,2,not_description;unverifiable,"headline and list title from a magazine, the black and white portrait of a blonde woman is not described",2026-10-20T18:24:34.000Z
+012418790,2,spam;grammar;hallucination,"yellow bubbles on a red background are visible, no squares are shown and the rest is broken sales commentary with stock illustration boilerplate",2026-10-20T18:24:44.000Z
+012418183,3,not_description,"product title for the Lord of the Rings figure in the image, the figure itself is not described",2026-10-20T18:24:54.000Z
+012420815,3,text_copy;not_description,"caption copies the decal slogan in the image and the rest is a product listing, tent decal graphic is visible",2026-10-20T18:25:04.000Z
+012422406,2,hallucination,"mannequin dressed as a queen is visible, but she sits in a playing card decorated box, not a clothes washing machine",2026-10-20T18:25:14.000Z
+012420778,2,not_description;unverifiable,"image shows a full drum kit on a stage, caption gives specs for one snare drum and the year and materials cant be verified",2026-10-20T18:25:24.000Z
+012419504,4,unverifiable,"long shaft with a pipe at the far end is accurate, the lengths, direction and recovery label cant be verified",2026-10-20T18:25:34.000Z
+012423157,5,,,2026-10-20T18:25:44.000Z
+012418337,3,not_description;unverifiable,"man pictured with a dead boar is visible, Russian boar and hunting across the globe cant be verified",2026-10-20T18:25:54.000Z
+012422318,3,not_description;text_copy,"blog promo copy and the title is written in the collage image, the messy outdoor crafts collage is the subject but the crafts are not described",2026-10-20T18:26:04.000Z
+012418709,3,spam;not_description,"sales line and keyword list cap at 3, blue beaded mermaid necklace is visible",2026-10-20T18:26:14.000Z
+012418816,4,missing_detail,"cheesecake with cookie crumb layers is visible, the red white and blue layers, cream and wafer on top are not mentioned",2026-10-20T18:26:24.000Z
+012418493,2,text_copy,"caption is a line of text from the Blu-Ray slide in the image, the slide and disc are not described",2026-10-20T18:26:34.000Z
+012422342,3,spam;unverifiable,"AP Photo credit is boilerplate so caps at 3, Patriots player throwing a ball is accurate, game, date and place cant be verified",2026-10-20T18:26:44.000Z
+012421881,2,spam;hallucination;not_description,"forum line and keyword list, the artwork banner says Final Fantasy IX not VII and the characters are not described",2026-10-20T18:26:54.000Z
+012418339,3,not_description;spam,"product listing, black and white cross front maxi dress is accurate, Fashion Bible and 21 Buttons are site boilerplate",2026-10-20T18:27:04.000Z
+012421102,2,text_copy;not_description,"caption is just the film title printed on the poster, no description of the two men in the keyhole poster art",2026-10-20T18:27:14.000Z
+012418403,5,,,2026-10-20T18:27:24.000Z
+012417896,3,not_description;unverifiable,"listing title, a balcony overlooking the sea is visible, 1 bedroom apartment cant be verified and no bedroom is shown",2026-10-20T18:27:34.000Z
+012418848,3,grammar;unverifiable,"bridesmaid and children in white walking an aisle are visible, Barrier Rings wording is garbled and the vineyard place cant be verified",2026-10-20T18:27:44.000Z
+012418593,4,unverifiable;missing_detail,"wooden chairs and panoramic windows are accurate, shorefront cant be verified and the dining table is not mentioned",2026-10-20T18:27:54.000Z
+012418959,4,unverifiable,"garden overlooking a hillside is accurate, Malibu cant be verified",2026-10-20T18:28:04.000Z
+012419138,4,unverifiable,"stylised yuzu fruit graphic with family and species labels is accurate, names in three languages is hard to check from the graphic",2026-10-20T18:28:14.000Z
+012417869,4,unverifiable,"purple black and lilac layered paisley motifs with guitars and doves are accurate, song book tribute story cant be verified",2026-10-20T18:28:24.000Z
+012418200,3,spam;unverifiable,"line drawing of a side table viewed from above at an angle is accurate, the inch sizes are product spec boilerplate that caps at 3",2026-10-20T18:28:34.000Z
+012418331,1,wrong_subject;hallucination,"image is a pale grid with a small hammer icon in the corner, no kitchen, cabinets or appliances visible",2026-10-20T18:28:44.000Z
+012418620,2,spam;hallucination,"keyword list, black and white derelict building interior with graffiti is there but there is no ladder",2026-10-20T18:28:54.000Z
+012420881,5,,,2026-10-20T18:29:04.000Z
+012421989,3,unverifiable;missing_detail,"model walking a runway is accurate, Gucci Cruise 2016 cant be verified and the pink dress is not described",2026-10-20T18:29:14.000Z
+012421608,2,not_description;vague;grammar,"broken fragment, table is covered with tea packets, small jars, lemons and small bottles, no cocktails are visible",2026-10-20T18:29:24.000Z
+012423006,3,spam;not_description;unverifiable,"product listing, a transforming toy vehicle is visible, character name, 4.5 inch size and age range are listing details that cant be checked",2026-10-20T18:29:34.000Z
+012423234,2,spam;not_description,"video title plus keyword list, image shows a single Cannell Entertainment logo, not a collection of logos",2026-10-20T18:29:44.000Z
+012420996,3,not_description;unverifiable,"headline, man in a light coloured suit is visible, the 20 dollar claim and French Riviera cant be verified",2026-10-20T18:29:54.000Z
+012418780,3,spam,"red fez icon on a white background is accurate, 1300x1300 is a size spec that caps at 3",2026-10-20T18:30:04.000Z
+012418007,3,not_description;spam,"store product title, woman in a green Anarkali suit with gold trim is visible",2026-10-20T18:30:14.000Z
+012417981,2,text_copy,"caption is word for word the text on the slide, it does not describe the piano keyboard diagram",2026-10-20T18:30:24.000Z
+012418838,3,not_description;text_copy,"product listing for a framed pebble art picture, the dog house wording is copied from the artwork itself",2026-10-20T18:30:34.000Z
+012420956,3,not_description;unverifiable,"sales listing, a dark coffee table is visible, 1950s Scandinavian origin and designer links are speculation that cant be verified",2026-10-20T18:30:44.000Z
+012422024,3,grammar;unverifiable,"boats, a hut and a dock on the water are visible, kampung style and stored nets and buckets cant be checked and the caption cuts off mid word",2026-10-20T18:30:54.000Z
+012418828,2,not_description;unverifiable,"news caption about a cookoff win, no description of the woman stirring a large pot, team role and 2014 win cant be verified",2026-10-20T18:31:04.000Z
+012421816,2,not_description;unverifiable,"news caption identifying an athlete for a future event, no description of the man lifting a dumbbell overhead, event details cant be verified",2026-10-20T18:31:14.000Z
+012422727,3,not_description;spam,"product listing title, tote bag with The British Museum printed on it is visible, direct from Korea and brand new are sales details",2026-10-20T18:31:24.000Z
+012419969,3,spam;not_description;unverifiable,"listing title, stacks of printed Lego heads are visible, glow in the dark, factory prototype and rare cant be verified from the photo",2026-10-20T18:31:34.000Z
+012418858,3,unverifiable,"duck standing on a rock is accurate, Central Park cant be verified",2026-10-20T18:31:44.000Z
+012421510,2,not_description;unverifiable,"caption is only a hotel name, no description of the room with two beds, name cant be verified",2026-10-20T18:31:54.000Z
+012419694,3,not_description;unverifiable,"sales pitch, olive long dress is visible, whether the model is short cant be verified",2026-10-20T18:32:04.000Z
+012419035,2,spam;not_description;hallucination,"booking advert plus keyword list, room with a bed is visible but Pacific Ocean, money and students are not in the image",2026-10-20T18:32:14.000Z
+012422495,3,missing_detail;vague,"young subject on a red background is right, caption never says it is a black and tan puppy",2026-10-20T18:32:24.000Z
+012422741,2,hallucination;not_description,"white short sleeve shirt matches, but there is no model wearing it, the shirt is shown flat on its own",2026-10-20T18:32:34.000Z
+012421034,3,spam;not_description;unverifiable,"schoolgirls holding kits are visible, place names and the 300 kits count cant be verified, keyword list at the end is spam",2026-10-20T18:32:44.000Z

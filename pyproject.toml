@@ -23,7 +23,7 @@ dependencies = [
 
 [project.optional-dependencies]
 # GPU pod only (RunPod). vLLM pins its own torch build.
-gpu = ["vllm>=0.11", "transformers>=4.57", "torch", "ray[data]", "peft", "accelerate", "openai", "pycocoevalcap"]
+gpu = ["vllm>=0.11", "transformers>=4.57", "torch", "ray[data]", "peft", "accelerate", "pycocoevalcap"]
 notebook = ["jupyterlab", "ipykernel"]
 dev = ["pytest", "ruff"]
 

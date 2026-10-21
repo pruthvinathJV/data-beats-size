@@ -1,0 +1,12 @@
+{
+  "raw": 100820,
+  "rule:near_blank": 165,
+  "rule:too_small": 103,
+  "rule:extreme_aspect": 1,
+  "rule:too_short": 111,
+  "rule:too_long": 992,
+  "near_duplicate": 527,
+  "decontamination": 164,
+  "b_pool": 98757,
+  "removed_share": 0.0205
+}

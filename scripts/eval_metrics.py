@@ -41,7 +41,7 @@ def main():
 
     runs = pd.DataFrame(rows)
     runs.to_csv(RESULTS / "eval_runs.csv", index=False)
-    arms = runs.groupby("arm").agg(["mean", "std"]).round(4)
+    arms = runs.drop(columns="run").groupby("arm").agg(["mean", "std"]).round(4)
     arms.columns = ["_".join(c) for c in arms.columns]
     arms.to_csv(RESULTS / "eval_arms.csv")
 

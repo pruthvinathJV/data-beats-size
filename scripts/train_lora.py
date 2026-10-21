@@ -77,12 +77,13 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--arm", required=True)
     ap.add_argument("--seed", type=int, required=True)
+    ap.add_argument("--max-steps", type=int, default=None, help="smoke test only; output goes to runs/_smoke")
     args = ap.parse_args()
     from peft import LoraConfig, get_peft_model
     from transformers import AutoModelForImageTextToText, get_cosine_schedule_with_warmup
 
     run_name = f"{args.arm}_s{args.seed}"
-    out = RUNS / run_name
+    out = RUNS / ("_smoke" if args.max_steps else run_name)
     if (out / "done.json").exists():
         print(f"{run_name} already trained")
         return
@@ -102,11 +103,11 @@ def main():
     g = torch.Generator().manual_seed(args.seed)
     loader = DataLoader(data, batch_size=HP["batch_size"], shuffle=True, generator=g, num_workers=4,
                         collate_fn=Collate(proc, prompt_len), drop_last=True, persistent_workers=True)
-    steps = HP["epochs"] * len(loader)
+    steps = args.max_steps or HP["epochs"] * len(loader)
     opt = torch.optim.AdamW([p for p in model.parameters() if p.requires_grad], lr=HP["lr"],
                             weight_decay=HP["weight_decay"])
     sched = get_cosine_schedule_with_warmup(opt, HP["warmup_steps"], steps)
-    cfg = load_config("configs/polaris_calibration.yaml") | {"run_name": run_name}
+    cfg = load_config("configs/default.yaml") | {"run_name": run_name}
     run = init_wandb(cfg, "train", arm=args.arm, seed=args.seed, hp=HP, trainable_params=trainable)
 
     model.train()
@@ -123,6 +124,8 @@ def main():
             opt.zero_grad(set_to_none=True)
             step += 1
             losses.append(loss.item())
+            if step >= steps:
+                break
             if step % 25 == 0:
                 run.log({"loss": sum(losses[-25:]) / 25, "lr": sched.get_last_lr()[0]}, step=step)
                 print(f"{run_name} step {step}/{steps} loss {sum(losses[-25:]) / 25:.4f}", flush=True)

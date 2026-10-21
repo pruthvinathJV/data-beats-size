@@ -29,7 +29,7 @@ def thumbnail_bytes(b: bytes, side: int = 256) -> bytes:
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--config", default="configs/polaris_calibration.yaml")
+    ap.add_argument("--config", default="configs/default.yaml")
     ap.add_argument("--splits", nargs="+", default=["train", "test"])
     args = ap.parse_args()
 

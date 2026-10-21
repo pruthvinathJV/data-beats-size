@@ -1,0 +1,29 @@
+{
+  "reviewer": "author",
+  "date": "2026-10-20",
+  "rounds": [
+    {
+      "round": 1,
+      "proposals": 5,
+      "outcome": "not reviewed rule by rule: four proposals were the same regex under different names and one matched the author's tag names instead of caption text. The agent's tools were changed (near-duplicate guard, minimum support, pool_examples tool, clearer prompt) and the agent was rerun.",
+      "log": "results/agent_round1/"
+    },
+    {
+      "round": 2,
+      "decisions": [
+        {
+          "rule": "contains_boilerplate",
+          "decision": "reject",
+          "reason": "Captions with stock-illustration boilerplate were rated 3 (accurate, boilerplate-capped), not bad (precision 0.09 against 'rated 1-2'). Deleting them would remove a whole image type (illustrations, ~6% of the pool) and reduce diversity; re-captioning (arm E) addresses the boilerplate without dropping the images."
+        },
+        {
+          "rule": "contains_spam_keywords",
+          "decision": "reject",
+          "reason": "It just copies my examples: its words were lifted from specific hand-rated captions ('Technology', 'Etsy', 'PERSON> letter'), and on the pool it also removes good captions."
+        }
+      ],
+      "tool_fix_after_review": "propose() did not enforce the stated precision >= 0.7; contains_boilerplate passed because of that. MIN_PRECISION is now enforced for any future run."
+    }
+  ],
+  "approved_rules": []
+}

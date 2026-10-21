@@ -1,0 +1,33 @@
+{
+  "pool": 100820,
+  "b_pool": 98757,
+  "keep_rate_C_D": 0.253,
+  "D_rule": "CLIPScore top-k, judge tiebreak (gate failed)",
+  "A": {
+    "n": 25000,
+    "mean_words": 17.31,
+    "mean_clipscore": 0.67
+  },
+  "B": {
+    "n": 25000,
+    "mean_words": 16.69,
+    "mean_clipscore": 0.673
+  },
+  "C": {
+    "n": 25000,
+    "mean_words": 18.62,
+    "mean_clipscore": 0.8291
+  },
+  "D": {
+    "n": 25000,
+    "mean_words": 18.62,
+    "mean_clipscore": 0.8291
+  },
+  "Dx": {
+    "n": 25000,
+    "mean_words": 13.19,
+    "mean_clipscore": 0.7344
+  },
+  "C_D_overlap": 1.0,
+  "C_Dx_overlap": 0.426
+}

@@ -1,5 +1,12 @@
 # Pre-registration
 
+> **Reader's guide (added after the study; everything below it is unchanged).**
+> This is the study plan, committed to git before any model output existed, so the commit history proves the rules came first.
+> Read it top to bottom as it was written: the original plan (50K-example arms, 200K pool), then dated **amendments** that changed it.
+> **A1** (before any results) shrank the arms to 25K and added arm E (synthetic captions) and the agent rule loop.
+> **A2** (after the judge checkpoint failed) kept the planned fallback for arm D and added the exploratory arm **D\***.
+> **A3** (after training) records two implementation changes. Results: [REPORT.md](REPORT.md) · [Outcome](#outcome).
+
 Written before any judge, CLIPScore, or training result exists. The git commit
 timestamp of this file is the record. Changes after results exist go in the
 Amendments section with a date and a reason; nothing above it is edited.
@@ -85,3 +92,22 @@ Mean caption length per arm is reported for every arm, since synthetic captions 
 **Exploratory arm D\* (new, labeled exploratory everywhere it is reported).** D\* = B pool, judge top 25K. Motivation: the in-domain hand-rated result (+0.27) suggests the judge's advantage over CLIPScore is much larger on noisy web captions than on Polaris; the confirmatory gate did not require testing that. D\* is trained and evaluated exactly like the other arms (3 seeds). Its contrasts (D\* - A, D\* - C, E - D\*) are reported as exploratory and never as the pre-registered H1/H2.
 
 **Unchanged:** all thresholds, arms A, B, C, E, the arm E critic (the selection judge, as in A1), metrics and statistics.
+
+
+### A3 (2026-10-20, after training; implementation deviations, recorded after results existed)
+
+- **Evaluation judge:** Idefics3-8B-Llama3 instead of Phi-3.5-vision-instruct. Phi-3.5 (and other non-Qwen models) hung at engine start in the vLLM version used, so the evaluation judge ran in transformers, and Idefics3 (SigLIP + Llama 3) was chosen because it shares no family with any arm's selector or generator. It shares its architecture with the student model, which applies equally to every arm. Chosen before its scores existed; its first run was a sanity check (matching vs mismatched captions: 4.63 vs 1.72).
+- **Generator:** `OpenGVLab/InternVL3-2B-hf`, the transformers-native release of the same InternVL3-2B model, run in transformers for the same vLLM reason.
+- **H1 and H2** concern arm D, which after the NO-GO gate holds the same data as arm C; they reduce to H3 and are not reported separately.
+
+## Outcome
+
+*Added after the study; numbers from [REPORT.md](REPORT.md).*
+
+| Item | Result |
+|---|---|
+| Gate | **NO-GO**: judge +0.013 over CLIPScore on Polaris (needed ≥ 0.05); +0.272 on the hand-rated set |
+| H3: C > A on CIDEr | **Not supported** (−0.010, 95% CI −0.022 to +0.002) |
+| H4: E > A on CIDEr | **Not supported** (−0.039, CI −0.054 to −0.024) |
+| H5 (exploratory): E vs D | E is lower on CIDEr and higher on hallucination than C (= D) |
+| Exploratory D\* vs A | CIDEr +0.308 (CI +0.294 to +0.323); hallucinating captions −4.0 points |
